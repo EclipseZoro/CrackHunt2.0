@@ -12,3 +12,8 @@ Key points to take care of:
    5. Make the Backend free of loopholes.
    6. Make the leaderboard correctly functional and free of errors.
 
+Basic TechStacks will be using:
+   1. Frontend - ReactJS, Tailwind CSS, Websockets/RestAPI
+   2. Backend - Django, websocket/RestAPI
+   3. Database - PostgreSQl/MySQL, MongDB
+   
