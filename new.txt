@@ -1,0 +1,14 @@
+This is the 2nd Crackhunt Event website
+Key points to do:
+   1. Make a new and beautiful functonal website for the event.
+   2. Make games, this time make atleast 25 games (Have a lot of time)
+   3. Set a good and new theme for the website.
+
+Key points to take care of:
+   1. Make the website non hackable.
+   2. Make the website glitch free.
+   3. Keep the algorithm of the game hidden so that its not possible to hack.
+   4. Make it difficult for the players who think that they are super techies.
+   5. Make the Backend free of loopholes.
+   6. Make the leaderboard correctly functional and free of errors.
+
