@@ -16,4 +16,3 @@ Basic TechStacks will be using:
    1. Frontend - ReactJS, Tailwind CSS, Websockets/RestAPI
    2. Backend - Django, websocket/RestAPI
    3. Database - PostgreSQl/MySQL, MongDB
-   
