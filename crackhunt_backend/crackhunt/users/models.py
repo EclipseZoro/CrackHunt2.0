@@ -1,10 +1,10 @@
-from django.contrib.auth.models import AbstractUser, Group, Permission
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 class CustomUser(AbstractUser):
-    # Add any custom fields if needed
-    pass
+    email = models.EmailField(unique=True)  # Unique Email for login
+    score = models.IntegerField(default=0)  # Track user score
+    total_time = models.FloatField(default=0.0)  # Total time taken to complete levels
 
-    # Fix related_name conflicts
-    groups = models.ManyToManyField(Group, related_name="customuser_groups")
-    user_permissions = models.ManyToManyField(Permission, related_name="customuser_permissions")
+    def __str__(self):
+        return self.username

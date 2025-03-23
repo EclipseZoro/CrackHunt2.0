@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework',  # Django REST API
+    'rest_framework',
+    'rest_framework_simplejwt',  # Django REST API
     'users',
     'games',
     'leaderboard',
@@ -53,6 +54,22 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     
 ]
+AUTH_USER_MODEL = 'users.CustomUser'
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}
+
+# JWT Token Settings
+from datetime import timedelta
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=1),  # Token expires in 1 day
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),  # Refresh token for 7 days
+    "ROTATE_REFRESH_TOKENS": True,
+    "BLACKLIST_AFTER_ROTATION": True,
+}
 CORS_ALLOW_ALL_ORIGINS = True  # Allow frontend to communicate
 
 ROOT_URLCONF = 'crackhunt.urls'
@@ -74,7 +91,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'crackhunt.wsgi.application'
-AUTH_USER_MODEL = 'users.CustomUser'
+
 
 
 # Database
