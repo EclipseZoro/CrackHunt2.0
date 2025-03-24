@@ -10,7 +10,7 @@ import trees from "../assets/svgs/trees.svg";
 import clouds from "../assets/svgs/Clippathgroup(2).svg";
 import gravestone from "../assets/svgs/Group1.svg";
 import background from "../assets/images/Desktop1.png";
-import Navbar from "./Navbar";
+import Navbar from "./Navbar.jsx";
 
 const HomePage = () => {
   return (
