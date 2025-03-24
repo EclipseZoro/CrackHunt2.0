@@ -1,7 +1,13 @@
 from rest_framework import serializers
-from .models import GameProgress
+from .models import GameLevel, PlayerProgress
 
-class GameProgressSerializer(serializers.ModelSerializer):
+class GameLevelSerializer(serializers.ModelSerializer):
     class Meta:
-        model = GameProgress
+        model = GameLevel
         fields = '__all__'
+
+
+class PlayerProgressSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PlayerProgress
+        fields = ['user', 'current_level', 'completed_levels', 'total_time_spent']
