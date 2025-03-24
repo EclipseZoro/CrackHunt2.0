@@ -1,22 +1,17 @@
-import React, { useState } from "react";
-// import "./Navbar.css";
-import pokemonIcon from "../assets/svgs/pokemon-p2-651.svg";
+import React from "react";
+import { Link } from "react-router-dom";
+import "./Navbar.css";
+import logo from "../assets/svgs/pokemon-p2-651.svg";
 
 const Navbar = () => {
-  const [registered, setRegistered] = useState(false);
-
   return (
     <nav className="navbar">
-      <img src={pokemonIcon} alt="Pokemon Icon" className="pokemon-icon" />
-      <ul>
-        <li><a href="#">Home</a></li>
-        <li><a href="#">Games</a></li>
+      <img src={logo} alt="Logo" className="logo" />
+      <ul className="nav-links">
+        <li><Link to="/">HOME</Link></li>
+        <li><Link to="/games">GAMES</Link></li>
         <li>
-          {registered ? (
-            <button className="leaderboard-btn">Leaderboard</button>
-          ) : (
-            <button className="register-btn" onClick={() => setRegistered(true)}>Register</button>
-          )}
+          <Link to="/leaderboard" className="leaderboard">LEADERBOARD</Link>
         </li>
       </ul>
     </nav>

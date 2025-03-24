@@ -1,0 +1,31 @@
+.board {
+    position: absolute;
+    bottom: 2%;
+    right: 5%;
+    width: 10%;
+    z-index: 3;
+    height: 75%;
+    width:auto;
+    margin-right: 25% ;
+    margin-bottom: 3%;
+  }
+.ghost1{
+    position: absolute;
+    bottom: 2%;
+    right: 5%;
+    width: 10%;
+    z-index: 3;
+    height: auto;
+    width:auto;
+    
+  }
+.ghost2{
+    position: absolute;
+    bottom: 2%;
+    right: 5%;
+    width: 10%;
+    z-index: 3;
+    height: auto;
+    width:auto;
+    
+  }
