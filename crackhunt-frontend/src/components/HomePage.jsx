@@ -39,7 +39,7 @@ const HomePage = () => {
       
       {/* Complete Scene (Moon, House, Bats, Black Soil) */}
       <img src={completeScene} alt="Scene" className="complete-scene" />
-      
+      {/* dadadawdawdad */}
       {/* Gravestone */}
       <img src={gravestone} alt="Gravestone" className="gravestone" />
       
