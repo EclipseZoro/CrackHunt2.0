@@ -37,7 +37,7 @@ def submit_score(request):
         return Response({'error': 'Score and total_time are required.'}, status=400)
 
     # Update or create the user's leaderboard entry
-    entry, created = LeaderboardEntry.objects.update_or_create(
+    entry, created = Leaderboard.objects.update_or_create(
         user=user,
         defaults={'score': F('score') + score, 'total_time': F('total_time') + total_time}
     )
