@@ -1,13 +1,19 @@
 import React from "react";
-import { BrowserRouter as Router } from "react-router-dom"; // Import Router
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom"; 
 import HomePage from "./components/HomePage";
+import Games from "./pages/Games";
+import TicTacToe from "./games/TicTacToe/GameComponent";  
 import "./App.css";
 
 function App() {
   return (
-    <Router> {/* Wrap everything inside Router */}
+    <Router> 
       <div className="app">
-        <HomePage />
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/games" element={<Games />} />
+          <Route path="/tic-tac-toe" element={<TicTacToe />} />
+        </Routes>
       </div>
     </Router>
   );
