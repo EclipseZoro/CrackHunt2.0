@@ -9,24 +9,25 @@ body, html {
   height: 100%;
   overflow: hidden;
 }
-
 .home-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr ) ; 
+  grid-template-rows: minmax(150px,auto) minmax(150px,auto) minmax(460px,auto) minmax(150px,auto) ;
   position: relative;
   width: 100vw;
   height: 100vh;
   background: #1a1a1a;
   overflow: hidden;
+  
 }
-
 .background-wrapper {
+  grid-column-start: 1;
+  grid-column-end: 4;
+  grid-row-start: 1;
+  grid-row-end: 5;
   display: flex;
-  top: 0;
-  left: 0;
-  width: auto;
-  height: 1080px;
   z-index: 1;
 }
-
 .background-image {
   width: auto;
   height: auto;
@@ -34,16 +35,25 @@ body, html {
   object-position: center;
 }
 
+.Navbarparent{
+  display: flex;
+  grid-column-start: 1;
+  grid-column-end: 4;
+  grid-row-start:1 ;
+  grid-row-end:2 ;
+  z-index: 20;
+  justify-content: center;
+  align-items: center;
+
+}
+
 /* Navbar Styles */
 .navbar {
+ 
   position: absolute;
-  top: -2%;
-  left: 50%;
-  transform: translateX(-50%);
   width: 70%;
   display: flex;
   justify-content: center;
-  gap: 2rem;
   z-index: 20;
   border-radius: 10rem;
   opacity: 0.5;
@@ -71,12 +81,19 @@ body, html {
   border-radius: 12px;
 }
 
+.charmanderparent{
+  
+  background-color: #FFA500;
+  z-index: 1000;
+  display: flex;
+  align-items: start;
+  justify-content: center;
+
+}
+
 /* Charmander */
 .charmander {
   position: absolute;
-  bottom: -2%;
-  right: 5%;
-  width: 10%;
   max-width: 150px;
   z-index: 90;
 }
@@ -97,14 +114,23 @@ body, html {
 .charmander:hover + .logpoint {
   opacity: 1;
 }
-/* Branch Pumpkins */
+.branchPumpkinsParent{
+  grid-row-start: 1;
+  grid-row-start: 3; 
+  grid-column-start: 3;
+  grid-column-end: 4;
+  z-index: 20;
+  display: flex;
+  justify-content: right;
+
+}
 .branch-pumpkins {
-  position: absolute;
-  top: 5%;
-  right: 0%;
-  width: 15%;
-  max-width: 200px;
-  z-index: 3;
+  
+  display: flex;
+  width: 60%;
+  z-index: 40;
+  position: right;
+  
 }
 
 /* Responsive Adjustments */
@@ -144,40 +170,67 @@ body, html {
       padding: 0.4rem 1rem;
   }
 }
-
-.crackhuntText {
-  position: absolute;
+.cracktextparent{
+  display: flex;
+  grid-column-start: 1;
+  grid-column-end: 4;
+  grid-row-start: 2;
+  grid-row-end: 3;
   z-index: 20;
-  top: 15vh;
-  left: 50vw;
-  transform: translateX(-50%);
-  margin: 0 auto;
+  justify-content: center;
+  align-items: center;
+
 }
 
+.treeParent{
+  
+  grid-column-start:1 ;
+  grid-column-end: 2;
+  grid-row-start: 2;
+  grid-row-end: 5;
+  z-index: 50;
+  display: flex;
+  justify-content: left;
+  align-items: flex-end;
+
+}
 .trees {
-  position: absolute;
+  flex-wrap: wrap;
   z-index: 20;
-  bottom: 0;
-  left: 0;
-  height: 75vh;
+  width: 75%;
+ 
+}
+.centreparent{
+  z-index: 100;
+  grid-column-start: 1;
+  grid-column-end: 4;
+  grid-row-start: 3;
+  grid-row-end: 6;
+  display: flex;
+  justify-content: center;
+
 }
 
 .centre {
-  position: absolute;
+  height: 80%;
   z-index: 50;
-  bottom: 10vh;
-  left: 50%;
-  transform: translateX(-50%);
-  height: 60vh;
+ 
 }
+.bottomParent{
+  
+  grid-column-start: 1;
+  grid-column-end: 4;
+  grid-row-start: 4;
+  grid-row-end: 5;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: wrap;
 
+}
 .bottom {
-  position: absolute;
-  z-index: 50;
-  bottom: -10vh;
-  left: 0;
-  height: 33vh;
-  width: auto;
+  flex-wrap: wrap;
+  z-index: 0;
+  
 }
-
-

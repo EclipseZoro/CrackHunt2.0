@@ -1,3 +1,4 @@
+
 import React from "react";
 import "./HomePage.css";
 import branchPumpkins from "../assets/svgs/Group5.svg";
@@ -21,43 +22,58 @@ const HomePage = () => {
           className="background-image" 
         />
       </div>
-
-      {/* Navbar */}
+      <div className="Navbarparent">
+        {/* Navbar */}
       <Navbar />
-
-      {/* Branch with Pumpkins */}
+      </div>
+      
+      <div className="branchPumpkinsParent">
+        {/* Branch with Pumpkins */}
       <img 
         src={branchPumpkins} 
         alt="Branch with Pumpkins" 
         className="branch-pumpkins" 
       />
-      {/* trees */}
+      </div>
+      <div className="treeParent">
       <img 
         src={trees} 
         alt="trees" 
         className="trees" 
       />
-      {/* cracjhunt */}
+      </div>
+      
      
-      <img 
+      {/* cracjhunt */}
+     <div className="cracktextparent">
+     <img 
         src={crackhunt} 
         alt="Crackhunt Text" 
         className="crackhuntText" 
       />
-      <img 
+     </div>
+     <div className="bottomParent">
+     <img 
         src={bottom} 
         alt="Crackhunt Text" 
         className="bottom" 
       />
+      </div> 
+      
+      <div className="centreparent">
       <img 
         src={centre} 
         alt="Crackhunt Text" 
         className="centre" 
       />
-     
 
-      {/* Charmander */}
-      <img 
+
+      </div>
+      
+     
+    <div className="charmanderparent">
+       {/* Charmander */}
+       <img 
         src={charmander} 
         alt="Charmander" 
         className="charmander" 
@@ -67,6 +83,8 @@ const HomePage = () => {
       </div>
       
     </div>
+    </div>
+     
   );
 };
 
