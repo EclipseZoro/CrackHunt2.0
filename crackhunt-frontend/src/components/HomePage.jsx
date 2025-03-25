@@ -3,7 +3,7 @@ import "./HomePage.css";
 import branchPumpkins from "../assets/svgs/Group5.svg";
 import LeaderBoard from "../components/Leaderpage.jsx";
 import charmander from "../assets/svgs/Group15.svg";
-import background from "../assets/images/back.svg";
+import background from "../assets/images/sabkebackbc.svg";
 import Navbar from "./Navbar.jsx";
 
 const HomePage = () => {
