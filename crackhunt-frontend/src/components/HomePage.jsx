@@ -3,7 +3,9 @@ import "./HomePage.css";
 import branchPumpkins from "../assets/svgs/Group5.svg";
 import LeaderBoard from "../components/Leaderpage.jsx";
 import charmander from "../assets/svgs/Group15.svg";
-import background from "../assets/images/sabkebackbc.svg";
+import crackhunt from "../assets/images/crackhuntText.svg";
+import trees from "../assets/svgs/trees.svg";
+import background from "../assets/images/homeback.png";
 import Navbar from "./Navbar.jsx";
 
 const HomePage = () => {
@@ -27,6 +29,20 @@ const HomePage = () => {
         alt="Branch with Pumpkins" 
         className="branch-pumpkins" 
       />
+      {/* trees */}
+      <img 
+        src={trees} 
+        alt="trees" 
+        className="trees" 
+      />
+      {/* cracjhunt */}
+     
+      <img 
+        src={crackhunt} 
+        alt="Crackhunt Text" 
+        className="crackhuntText" 
+      />
+     
 
       {/* Charmander */}
       <img 
