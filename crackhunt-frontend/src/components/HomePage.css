@@ -78,7 +78,7 @@ body, html {
   right: 5%;
   width: 10%;
   max-width: 150px;
-  z-index: 3;
+  z-index: 90;
 }
 .logpoint {
   position: absolute;
@@ -145,19 +145,39 @@ body, html {
   }
 }
 
-.crackhuntText{
+.crackhuntText {
   position: absolute;
   z-index: 20;
-  top: 18%;
-  left: 25%;
+  top: 15vh;
+  left: 50vw;
+  transform: translateX(-50%);
   margin: 0 auto;
 }
-.trees{
+
+.trees {
   position: absolute;
   z-index: 20;
-  bottom: -1%;
-  left: 0%;
-  height: 75%;
-
+  bottom: 0;
+  left: 0;
+  height: 75vh;
 }
+
+.centre {
+  position: absolute;
+  z-index: 50;
+  bottom: 10vh;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 60vh;
+}
+
+.bottom {
+  position: absolute;
+  z-index: 50;
+  bottom: -10vh;
+  left: 0;
+  height: 33vh;
+  width: auto;
+}
+
 

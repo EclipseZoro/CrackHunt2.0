@@ -5,7 +5,9 @@ import LeaderBoard from "../components/Leaderpage.jsx";
 import charmander from "../assets/svgs/Group15.svg";
 import crackhunt from "../assets/images/crackhuntText.svg";
 import trees from "../assets/svgs/trees.svg";
-import background from "../assets/images/homeback.png";
+import bottom from "../assets/images/bottom.svg";
+import centre from "../assets/images/centre.svg";
+import background from "../assets/images/homebackground.png";
 import Navbar from "./Navbar.jsx";
 
 const HomePage = () => {
@@ -41,6 +43,16 @@ const HomePage = () => {
         src={crackhunt} 
         alt="Crackhunt Text" 
         className="crackhuntText" 
+      />
+      <img 
+        src={bottom} 
+        alt="Crackhunt Text" 
+        className="bottom" 
+      />
+      <img 
+        src={centre} 
+        alt="Crackhunt Text" 
+        className="centre" 
       />
      
 
