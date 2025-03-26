@@ -69,22 +69,6 @@ const Profile = () => {
       
        
     
-      <div className="ghost1parent">
-        <img 
-                src={ghost1} 
-                alt="board" 
-                className="ghost1" 
-              />
-       
-    </div>
-      <div className="ghost2parent">
-        <img 
-                src={ghost2} 
-                alt="board" 
-                className="ghost1" 
-              />
-       
-    </div>
       <div className="bottomparent">
         <img 
                 src={bottom} 
