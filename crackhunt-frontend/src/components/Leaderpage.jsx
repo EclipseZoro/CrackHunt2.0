@@ -1,12 +1,15 @@
 import React from "react";
 import "./LeaderBoard.css";
-import background from "../assets/images/leaderback2.svg";
+import background from "../assets/images/homebackground.png";
 import board from "../assets/images/board.svg";
 import ghost1 from "../assets/images/ghost1.svg";
 import ghost2 from "../assets/images/ghost2.svg";
+import trees1 from "../assets/svgs/trees.svg";
+import trees2 from "../assets/svgs/trees2.svg";
+import bottom from "../assets/images/bottom.svg";
 import Navbar from "./Navbar.jsx";
 
-const HomePage = () => {
+const LeaderBoard = () => {
   return (
     <div className="home-container">
       {/* Background Image */}
@@ -17,30 +20,63 @@ const HomePage = () => {
           className="background-image" 
         />
       </div>
-      
-      {/* Navbar */}
+      <div className="Navbarparent">
+        {/* Navbar */}
       <Navbar />
-      
-      {/* Board */}
-      <img src={board} alt="board" className="board" />
-      
-      {/* Ghost 1 with Tooltip */}
-      <div className="ghost1-container">
-        <img src={ghost1} alt="Ghost 1" className="ghost1" />
-        <div className="ghost1-tooltip">
-          Climb the ladder or go to grave
-        </div>
       </div>
-      
-      {/* Ghost 2 with Tooltip */}
-      <div className="ghost2-container">
-        <img src={ghost2} alt="Ghost 2" className="ghost2" />
-        <div className="ghost2-tooltip">
-          Welcome to the Leaderboard
-        </div>
-      </div>
+      <div className="boardparent">
+        <img 
+                src={board} 
+                alt="board" 
+                className="board" 
+              />
+       
     </div>
+      <div className="ghost1parent">
+        <img 
+                src={ghost1} 
+                alt="board" 
+                className="ghost1" 
+              />
+       
+    </div>
+      <div className="ghost2parent">
+        <img 
+                src={ghost2} 
+                alt="board" 
+                className="ghost1" 
+              />
+       
+    </div>
+      <div className="bottomparent">
+        <img 
+                src={bottom} 
+                alt="board" 
+                className="bottom" 
+              />
+       
+    </div>
+      <div className="trees1parent">
+        <img 
+                src={trees1} 
+                alt="board" 
+                className="trees1" 
+              />
+       
+    </div>
+      <div className="trees2parent">
+        <img 
+                src={trees2} 
+                alt="board" 
+                className="trees2" 
+              />
+       
+    </div>
+     
+    </div>
+    
+      
   );
 };
 
-export default HomePage;
+export default LeaderBoard;
