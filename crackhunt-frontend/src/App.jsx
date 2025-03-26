@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"; 
 import HomePage from "./components/HomePage";
 import LeaderBoard from "./components/Leaderpage";  // Ensure correct casing
-import Games from "./pages/Games";
+import Games from "./components/Profile";
 import TicTacToe from "./games/TicTacToe/GameComponent";  
 import "./App.css";
 
