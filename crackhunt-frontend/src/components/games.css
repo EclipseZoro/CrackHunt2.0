@@ -1,0 +1,205 @@
+@import url('https://fonts.googleapis.com/css2?family=Koulen&family=Dont+Famila&display=swap');
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body, html {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+  
+  .home-container {
+    .home-container {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      background: #1a1a1a;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: minmax(150px, auto) minmax(150px, auto) minmax(460px, auto) minmax(150px, auto);
+    }
+  }
+  .maingridtemplateforgamesparent{
+    grid-column: 1/4;
+    grid-row: 2/5;
+    z-index: 50;
+    display: flex;
+    justify-content: center;
+    align-items:flex-start;
+  }
+  .maingridtemplateforgames{
+    display: grid;
+    grid-template-rows: repeat(4,1fr);
+    height: 616px;
+    flex: 1; 
+    min-width: 800px; 
+    max-width: 1500px; 
+    width: 100%; 
+    z-index: 51;
+  }
+  .gamesrow1{
+    grid-row: 1/2;
+    z-index: 61;
+    display: flex;
+    justify-content:space-between ;
+    align-items: center;
+    padding: 10px;
+  }
+  .game1{
+    background-color: rebeccapurple;
+    height: 140px;
+    flex: 1;
+    max-width: 300px;
+    
+    border-radius: 25px;
+  }
+  .game2{
+    background-color: rebeccapurple;
+    height: 140px;
+    flex: 1;
+    max-width: 300px;
+    
+    border-radius: 25px;
+  }
+  .game3{
+    background-color: rebeccapurple;
+    height: 140px;
+    flex: 1;
+    max-width: 300px;
+    
+    border-radius: 25px;
+  }
+  .game4{
+    background-color: rebeccapurple;
+    height: 140px;
+    flex: 1;
+    max-width: 300px;
+    
+    border-radius: 25px;
+  }
+  .gamesrow2{
+    grid-row: 2/3;
+    z-index: 61;
+    display: flex;
+    justify-content:space-between ;
+    align-items: center;
+    padding: 10px;
+  }
+  .game5{
+    background-color: rebeccapurple;
+    height: 140px;
+    flex: 1;
+    max-width: 300px;
+    
+    border-radius: 25px;
+  }
+  .game6{
+    background-color: rebeccapurple;
+    height: 140px;
+    flex: 1;
+    max-width: 300px;
+    
+    border-radius: 25px;
+  }
+  .game7{
+    background-color: rebeccapurple;
+    height: 140px;
+    flex: 1;
+    max-width: 300px;
+    
+    border-radius: 25px;
+  }
+  .game8{
+    background-color: rebeccapurple;
+    height: 140px;
+    flex: 1;
+    max-width: 300px;
+    
+    border-radius: 25px;
+  }
+  .gamesrow3{
+    grid-row: 3/4;
+    z-index: 61;
+    display: flex;
+    justify-content:space-between ;
+    align-items: center;
+    padding: 10px;
+  }
+  .game9{
+    background-color: rebeccapurple;
+    height: 140px;
+    flex: 1;
+    max-width: 300px;
+    
+    border-radius: 25px;
+  }
+  .game10{
+    background-color: rebeccapurple;
+    height: 140px;
+    flex: 1;
+    max-width: 300px;
+    
+    border-radius: 25px;
+  }
+  .game11{
+    background-color: rebeccapurple;
+    height: 140px;
+    flex: 1;
+    max-width: 300px;
+    
+    border-radius: 25px;
+  }
+  .game12{
+    background-color: rebeccapurple;
+    height: 140px;
+    flex: 1;
+    max-width: 300px;
+    
+    border-radius: 25px;
+  }
+  .gamesrow4{
+    grid-row: 4/5;
+    z-index: 61;
+    display: flex;
+    justify-content:space-between ;
+    align-items: center;
+    padding: 10px;
+  }
+  .game13{
+    background-color: rebeccapurple;
+    height: 140px;
+    flex: 1;
+    max-width: 300px;
+    
+    border-radius: 25px;
+  }
+  .game14{
+    background-color: rebeccapurple;
+    height: 140px;
+    flex: 1;
+    max-width: 300px;
+    
+    border-radius: 25px;
+  }
+  .game15{
+    background-color: rebeccapurple;
+    height: 140px;
+    flex: 1;
+    max-width: 300px;
+    
+    border-radius: 25px;
+  }
+  .game16{
+    background-color: rebeccapurple;
+    height: 140px;
+    flex: 1;
+    max-width: 300px;
+    
+    border-radius: 25px;
+  }
+
+  

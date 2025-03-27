@@ -1,27 +1,24 @@
 import React, { useState } from "react";
-import { useAuth } from "../components/AuthContext";
 import { useNavigate } from "react-router-dom";
 import background from "../assets/images/homebackground.png";
 import trees1 from "../assets/svgs/trees.svg";
 import trees2 from "../assets/svgs/trees2.svg";
 import bottom from "../assets/images/bottom.svg";
-import "./profile.css";
-import Navbar from "./Navbar.jsx";
+import "./register.css";
 
-const Profile = () => {
-  const { login } = useAuth();
+const Register = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleLogin = () => {
-    const storedUser = JSON.parse(localStorage.getItem(username));
-    if (storedUser && storedUser.password === password) {
-      login();
-      navigate("/");
+  const handleRegister = () => {
+    if (localStorage.getItem(username)) {
+      setError("Username already exists. Try a different one.");
     } else {
-      setError("Invalid username or password");
+      localStorage.setItem(username, JSON.stringify({ username, password }));
+      alert("Registration successful! You can now log in.");
+      navigate("/profile");
     }
   };
 
@@ -30,10 +27,6 @@ const Profile = () => {
       {/* Background Image */}
       <div className="background-wrapper">
         <img src={background} alt="Background" className="background-image" />
-      </div>
-      <div className="Navbarparent">
-        {/* Navbar */}
-      <Navbar />
       </div>
       <div className="bottomparent">
         <img src={bottom} alt="bottom" className="bottom" />
@@ -48,8 +41,8 @@ const Profile = () => {
         <div className="centreblackbox"></div>
       </div>
 
-      <div className="usernameformparent">
-        <div className="usernameformgrid">
+      <div className="registerformparent">
+        <div className="registerformgrid">
           {/* Username Field */}
           <div className="usertextparent">
             <div className="usertext">Username</div>
@@ -81,18 +74,18 @@ const Profile = () => {
           {/* Error Message */}
           {error && <div className="error-message">{error}</div>}
 
-          {/* Login Button */}
-          <div className="login-button-container">
-            <button className="login-button" onClick={handleLogin}>
-              Login
+          {/* Register Button */}
+          <div className="register-button-container">
+            <button className="register-button" onClick={handleRegister}>
+              Register
             </button>
           </div>
 
-          {/* Register Link */}
-          <div className="register-link">
-            <p>Don't have an account?</p>
-            <button className="register-button" onClick={() => navigate("/register")}>
-              Register
+          {/* Back to Login Link */}
+          <div className="back-link">
+            <p>Already have an account?</p>
+            <button className="back-button" onClick={() => navigate("/profile")}>
+              Back to Login
             </button>
           </div>
         </div>
@@ -101,4 +94,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default Register;
