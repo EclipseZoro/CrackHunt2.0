@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useAuth } from "../components/AuthContext";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import background from "../assets/images/homebackground.png";
 import trees1 from "../assets/svgs/trees.svg";
 import trees2 from "../assets/svgs/trees2.svg";
@@ -15,25 +16,32 @@ const Profile = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleLogin = () => {
-    const storedUser = JSON.parse(localStorage.getItem(username));
-    if (storedUser && storedUser.password === password) {
-      login();
-      navigate("/");
-    } else {
+  const handleLogin = async () => {
+    try {
+      const response = await axios.post("http://127.0.0.1:8000/api/users/login/", {
+        username,
+        password,
+      });
+
+      const { access, refresh, username: loggedInUser } = response.data;
+      localStorage.setItem("accessToken", access);
+      localStorage.setItem("refreshToken", refresh);
+      localStorage.setItem("username", loggedInUser);
+
+      login(loggedInUser); // Store user in AuthContext
+      navigate("/"); // Redirect to home page
+    } catch (error) {
       setError("Invalid username or password");
     }
   };
 
   return (
     <div className="home-container">
-      {/* Background Image */}
       <div className="background-wrapper">
         <img src={background} alt="Background" className="background-image" />
       </div>
       <div className="Navbarparent">
-        {/* Navbar */}
-      <Navbar />
+        <Navbar />
       </div>
       <div className="bottomparent">
         <img src={bottom} alt="bottom" className="bottom" />
@@ -50,7 +58,6 @@ const Profile = () => {
 
       <div className="usernameformparent">
         <div className="usernameformgrid">
-          {/* Username Field */}
           <div className="usertextparent">
             <div className="usertext">Username</div>
           </div>
@@ -64,7 +71,6 @@ const Profile = () => {
             />
           </div>
 
-          {/* Password Field */}
           <div className="usertextparent">
             <div className="usertext">Password</div>
           </div>
@@ -78,17 +84,14 @@ const Profile = () => {
             />
           </div>
 
-          {/* Error Message */}
           {error && <div className="error-message">{error}</div>}
 
-          {/* Login Button */}
           <div className="login-button-container">
             <button className="login-button" onClick={handleLogin}>
               Login
             </button>
           </div>
 
-          {/* Register Link */}
           <div className="register-link">
             <p>Don't have an account?</p>
             <button className="register-button" onClick={() => navigate("/register")}>
