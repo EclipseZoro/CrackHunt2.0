@@ -1,0 +1,26 @@
+{
+  "files": {
+    "main.css": "/static/css/main.8edc5c1c.css",
+    "main.js": "/static/js/main.c6d39147.js",
+    "static/media/ghost1.svg": "/static/media/ghost1.49085dfa3c8843a516baa787787f6690.svg",
+    "static/media/ghost2.svg": "/static/media/ghost2.3e27de471a3fa8e5ca893719f30d1916.svg",
+    "static/media/homebackground.png": "/static/media/homebackground.2970f3d4e0f164a25709.png",
+    "static/media/centre.svg": "/static/media/centre.5bbb41ada4e4541de9067709cfbe1777.svg",
+    "static/media/board.svg": "/static/media/board.a2acdf19a11c6ba5dcd0b791c64bec5c.svg",
+    "static/media/Group15.svg": "/static/media/Group15.a0772671cac3993069fc7eb8e4b9ee63.svg",
+    "static/media/pokemon-p2-651.svg": "/static/media/pokemon-p2-651.5d785fc2a970049a6549978e4dbb16c3.svg",
+    "static/media/bottom.svg": "/static/media/bottom.8759ab625712ee18fd54fddd44c77a96.svg",
+    "static/media/crackhuntText.svg": "/static/media/crackhuntText.07ce4d0f52bd8d211cee400fb88450cd.svg",
+    "static/media/pokemon.svg": "/static/media/pokemon.53c3878ae75192306fcaec58cc90b49c.svg",
+    "static/media/Group5.svg": "/static/media/Group5.df7a9bb898812e45d7f84e329b3d2a09.svg",
+    "static/media/trees2.svg": "/static/media/trees2.3fed7f2b74f1677df50c8ef8257a6de5.svg",
+    "static/media/trees.svg": "/static/media/trees.8e558ed2fa571c4bbcc53f0e714d610f.svg",
+    "index.html": "/index.html",
+    "main.8edc5c1c.css.map": "/static/css/main.8edc5c1c.css.map",
+    "main.c6d39147.js.map": "/static/js/main.c6d39147.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.8edc5c1c.css",
+    "static/js/main.c6d39147.js"
+  ]
+}
