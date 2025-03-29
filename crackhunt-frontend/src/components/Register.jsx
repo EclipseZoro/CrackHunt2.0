@@ -91,7 +91,7 @@ const Register = () => {
 
           <div className="back-link">
             <p>Already have an account?</p>
-            <button className="back-button" onClick={() => navigate("/login")}>
+            <button className="back-button" onClick={() => navigate("/profile")}>
               Back to Login
             </button>
           </div>
