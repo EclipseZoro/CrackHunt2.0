@@ -11,36 +11,96 @@ import bottom from "../assets/images/bottom.svg";
 import Navbar from "./Navbar.jsx";
 
 const LeaderBoard = () => {
-  const [leaderboard, setLeaderboard] = useState([]); // Always an array
+  const [leaderboard, setLeaderboard] = useState([]);
   const [userRank, setUserRank] = useState(null);
+  const [userStatus, setUserStatus] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    // Get the token from localStorage
-    const token = localStorage.getItem('access_token');
-    
-    axios
-      .get("http://127.0.0.1:8000/api/leaderboard/", {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        }
-      })
-      .then(response => {
-        const data = response.data;
-        setLeaderboard(data.top_players || []);
-        setUserRank(data.user_rank || null);
-        setLoading(false);
-      })
-      .catch(error => {
-        console.error("API Error:", error.response?.data || error.message);
-        setError(error.response?.data?.detail || "Failed to load leaderboard");
-        setLoading(false);
-      });
-  }, []);
-  
+  // Helper function to format time
+  const formatTime = (totalSeconds) => {
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    return `${minutes}m ${seconds}s`;
+  };
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const token = localStorage.getItem('access_token');
+      
+      try {
+        // First try the main leaderboard endpoint
+        const leaderboardResponse = await axios.get("http://127.0.0.1:8000/api/leaderboard/", {
+          headers: token ? {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          } : {
+            'Content-Type': 'application/json',
+          }
+        });
+
+        // Set the leaderboard data
+        setLeaderboard(leaderboardResponse.data.top_players || []);
+        setUserStatus(leaderboardResponse.data.user_status || 'unknown');
+        
+        // If user rank is provided, use it
+        if (leaderboardResponse.data.user_rank) {
+          setUserRank(leaderboardResponse.data.user_rank);
+        } 
+        // If user is authenticated but no rank, try the specific endpoint
+        else if (token && leaderboardResponse.data.user_status === 'authenticated') {
+          try {
+            const userRankResponse = await axios.get("http://127.0.0.1:8000/api/leaderboard/user-rank/", {
+              headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+              }
+            });
+            setUserRank(userRankResponse.data);
+          } catch (rankError) {
+            console.error("User rank error:", rankError.response?.data || rankError.message);
+            if (rankError.response?.status === 401) {
+              setUserStatus('token_expired');
+              localStorage.removeItem('access_token');
+            }
+          }
+        }
+        
+        setLoading(false);
+      } catch (error) {
+        console.error("API Error:", error.response?.data || error.message);
+        if (error.response?.status === 401) {
+          setUserStatus('token_expired');
+          setError("Session expired. Please login again.");
+          localStorage.removeItem('access_token');
+        } else {
+          setError(error.response?.data?.detail || "Failed to load leaderboard");
+        }
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  // Get user rank message based on status
+  const getUserRankMessage = () => {
+    if (!localStorage.getItem('access_token')) {
+      return "Login to view your rank";
+    }
+    
+    switch (userStatus) {
+      case 'not_authenticated':
+        return "Please login again to view your rank";
+      case 'no_leaderboard_entry':
+        return "Play a game to get on the leaderboard!";
+      case 'token_expired':
+        return "Your session expired. Please login again.";
+      default:
+        return "Couldn't retrieve your rank";
+    }
+  };
+  
   return (
     <div className="home-container">
       {/* Background Image */}
@@ -53,27 +113,36 @@ const LeaderBoard = () => {
       <div className="boardparent">
         <img src={board} alt="board" className="board" />
         {loading ? (
-          <p className="loading-text">Loading...</p>
+          <p className="loading-text">Loading leaderboard...</p>
         ) : error ? (
           <p className="error-text">{error}</p>
         ) : (
           <div className="leaderboard-text">
+            <h2 className="leaderboard-title">Top Players</h2>
             {leaderboard.length > 0 ? (
-              leaderboard.slice(0, 5).map((player, index) => (
+              leaderboard.map((player, index) => (
                 <p key={index} className={`rank-${index + 1}`}>
                   {index + 1}. {player.username} - {player.score} points
+                  {player.total_time ? ` - ${formatTime(player.total_time)}` : ''}
                 </p>
               ))
             ) : (
               <p className="no-data">No leaderboard data available</p>
             )}
-            {userRank ? (
-              <p className="user-rank">
-                Your Rank: {userRank.rank ?? "N/A"} - {userRank.score ?? 0} points
-              </p>
-            ) : (
-              <p className="no-rank">No rank data available</p>
-            )}
+            
+            <div className="user-rank-section">
+              {userRank ? (
+                <p className="user-rank">
+                  Your Rank: {userRank.rank} / {userRank.total_players || '?'} - 
+                  Score: {userRank.score} - 
+                  Time: {formatTime(userRank.total_time)}
+                </p>
+              ) : (
+                <p className="no-rank">
+                  {getUserRankMessage()}
+                </p>
+              )}
+            </div>
           </div>
         )}
       </div>
