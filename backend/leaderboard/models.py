@@ -11,8 +11,15 @@ class Leaderboard(models.Model):
     def __str__(self):
         return f"{self.user.username} - {self.score}"
 
-# ✅ Signal to create Leaderboard entry when a new User is registered
 @receiver(post_save, sender=User)
-def create_leaderboard_entry(sender, instance, created, **kwargs):
-    if created:  # Only create if user is newly registered
+def create_user_leaderboard(sender, instance, created, **kwargs):
+    if created:
         Leaderboard.objects.create(user=instance)
+
+@receiver(post_save, sender=User)
+def save_user_leaderboard(sender, instance, **kwargs):
+    try:
+        instance.leaderboard.save()
+    except Leaderboard.DoesNotExist:
+        Leaderboard.objects.create(user=instance)
+

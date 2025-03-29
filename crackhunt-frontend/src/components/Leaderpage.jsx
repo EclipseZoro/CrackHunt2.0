@@ -17,17 +17,20 @@ const LeaderBoard = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    // Get the token from localStorage
+    const token = localStorage.getItem('access_token');
+    
     axios
-      .get("http://127.0.0.1:8000/api/leaderboard/")
+      .get("http://127.0.0.1:8000/api/leaderboard/", {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        }
+      })
       .then(response => {
         const data = response.data;
-  
-        // Ensure top_players is always an array (even if empty)
-        setLeaderboard(Array.isArray(data.top_players) ? data.top_players : []);
-  
-        // Handle user rank
+        setLeaderboard(data.top_players || []);
         setUserRank(data.user_rank || null);
-  
         setLoading(false);
       })
       .catch(error => {
