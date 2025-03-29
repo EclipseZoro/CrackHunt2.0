@@ -6,15 +6,22 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const storedUser = JSON.parse(localStorage.getItem("loggedInUser"));
+    const storedUser = localStorage.getItem("loggedInUser");
+
     if (storedUser) {
-      setUser(storedUser);
+      try {
+        setUser(JSON.parse(storedUser)); // ✅ Parse only if valid JSON
+      } catch (error) {
+        console.error("Error parsing stored user:", error);
+        localStorage.removeItem("loggedInUser"); // Remove corrupted data
+      }
     }
   }, []);
 
   const login = (username) => {
-    setUser(username);
-    localStorage.setItem("loggedInUser", JSON.stringify(username));
+    const userData = { username }; // ✅ Store as an object
+    setUser(userData);
+    localStorage.setItem("loggedInUser", JSON.stringify(userData));
   };
 
   const logout = () => {

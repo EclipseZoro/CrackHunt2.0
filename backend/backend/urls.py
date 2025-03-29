@@ -1,30 +1,25 @@
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 from django.views.generic import TemplateView
 from django.conf import settings
 from django.conf.urls.static import static
-from django.views.static import serve
 import os
 
 urlpatterns = [
-    # Django Admin Panel
     path('admin/', admin.site.urls),
+    path('api/games/', include('games.urls')),
+    path('api/leaderboard/', include('leaderboard.urls')),
+    path('api/users/', include('users.urls')),
 
-    # API Routes
-    path('api/games/', include('games.urls')),  # Ensure this app exists
-    path('api/leaderboard/', include('leaderboard.urls')),  # Ensure this app exists
-    path('api/users/', include('users.urls')),  # User authentication endpoints
-
-    # Serve React's index.html from build/
-    path('', TemplateView.as_view(template_name='index.html'), name="home"),
+    # Serve React's index.html for any non-API routes
+    re_path(r'^(?!api/).*$', TemplateView.as_view(template_name=os.path.join(settings.BASE_DIR, 'build', 'index.html')), name="home"),
 ]
 
 # Serve static files correctly in development mode
 if settings.DEBUG:
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS[0])
 
-# Serve static files and manifest.json for React PWA
+from django.views.static import serve
 urlpatterns += [
     path('manifest.json', serve, {'document_root': os.path.join(settings.BASE_DIR, 'build'), 'path': 'manifest.json'}),
 ]
-
