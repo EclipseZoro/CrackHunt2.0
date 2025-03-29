@@ -95,6 +95,7 @@ const Profile = () => {
           <div className="register-link">
             <p>Don't have an account?</p>
             <button className="register-button" onClick={() => navigate("/register")}>
+              {/* ADSFSDF */}
               Register
             </button>
           </div>
