@@ -1,0 +1,164 @@
+.container {
+    text-align: center;
+    background-color: #1e1e1e;
+    border-radius: 16px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    border: 1px solid #333;
+}
+
+.title {
+    color: #4db8ff;
+    margin-bottom: 20px;
+    font-size: 2rem;
+}
+
+.grid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 20px auto;
+    width: 100%;
+}
+
+.row {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
+.tile {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.8em;
+    font-weight: bold;
+    border: 2px solid #333;
+    background-color: #2c2c2c;
+    color: #e0e0e0;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    border-radius: 6px;
+}
+
+.tileCorrect {
+    background-color: #538d4e;
+    color: white;
+    border-color: #538d4e;
+}
+
+.tileMisplaced {
+    background-color: #b59f3b;
+    color: white;
+    border-color: #b59f3b;
+}
+
+.tileIncorrect {
+    background-color: #3a3a3c;
+    color: #818384;
+    border-color: #3a3a3c;
+}
+
+.keyboard {
+    margin-top: 20px;
+}
+
+.keyboardRow {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: 8px;
+}
+
+.key {
+    padding: 12px;
+    font-size: 1rem;
+    cursor: pointer;
+    border: none;
+    background-color: #3c3c3c;
+    color: #e0e0e0;
+    border-radius: 6px;
+    transition: background-color 0.3s ease;
+    font-weight: bold;
+}
+
+.key:hover {
+    background-color: #4c4c4c;
+}
+
+.enterKey {
+    padding: 12px;
+    font-size: 1rem;
+    cursor: pointer;
+    border: none;
+    background-color: #4db8ff;
+    color: #121212;
+    border-radius: 6px;
+    transition: background-color 0.3s ease;
+    font-weight: bold;
+}
+
+.enterKey:hover {
+    background-color: #6ec2ff;
+}
+
+.backspaceKey {
+    padding: 12px;
+    font-size: 1rem;
+    cursor: pointer;
+    border: none;
+    background-color: #4db8ff;
+    color: #121212;
+    border-radius: 6px;
+    transition: background-color 0.3s ease;
+    font-weight: bold;
+}
+
+.backspaceKey:hover {
+    background-color: #6ec2ff;
+}
+
+.message {
+    font-size: 1.2rem;
+    margin: 15px 0;
+    color: #4db8ff;
+}
+
+.button {
+    margin-top: 15px;
+    padding: 12px 20px;
+    background-color: #4db8ff;
+    color: #121212;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.button:hover {
+    background-color: #6ec2ff;
+    transform: translateY(-2px);
+}
+
+@media (max-width: 480px) {
+    .tile {
+        width: 40px;
+        height: 40px;
+        font-size: 1.5em;
+    }
+    
+    .key, .enterKey, .backspaceKey {
+        padding: 8px;
+        font-size: 0.9rem;
+    }
+    
+    .container {
+        padding: 20px;
+    }
+}

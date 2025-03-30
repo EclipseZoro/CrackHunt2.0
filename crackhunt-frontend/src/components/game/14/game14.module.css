@@ -1,0 +1,358 @@
+.container {
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #1a1a1a, #4a4a4a);
+  color: white;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  width: 100%;
+}
+
+.screen {
+  background: rgba(0, 0, 0, 0.8);
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  max-width: 800px;
+  width: 100%;
+  text-align: center;
+}
+
+.title {
+  color: #FFD93D;
+  margin-bottom: 20px;
+  text-shadow: 0 0 10px rgba(255, 217, 61, 0.5);
+}
+
+.subtitle {
+  color: #4ECDC4;
+  font-size: 1.2em;
+  margin-bottom: 30px;
+}
+
+.instructions {
+  margin: 30px 0;
+  text-align: left;
+}
+
+.instructionsText {
+  margin: 15px 0;
+  font-size: 1.1em;
+}
+
+.rulesList {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 20px;
+  border-radius: 10px;
+  margin: 20px 0;
+}
+
+.rulesTitle {
+  color: #4ECDC4;
+  margin-bottom: 15px;
+}
+
+.rulesItems {
+  list-style-type: none;
+  padding-left: 20px;
+}
+
+.rulesItem {
+  margin: 10px 0;
+  position: relative;
+}
+
+.rulesItem::before {
+  content: "•";
+  color: #FFD93D;
+  position: absolute;
+  left: -20px;
+}
+
+.gameHeader {
+  margin-bottom: 30px;
+}
+
+.gameControls {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin: 20px 0;
+}
+
+.controlButton {
+  padding: 8px 20px;
+  font-size: 0.9em;
+  background: rgba(255, 217, 61, 0.2);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.controlButton:hover {
+  background: rgba(255, 217, 61, 0.3);
+}
+
+.gameBoard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(8, 50px);
+  gap: 1px;
+  background: #666;
+  padding: 1px;
+  border-radius: 5px;
+}
+
+.cell {
+  width: 50px;
+  height: 50px;
+  background: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  position: relative;
+  color: #000;
+}
+
+.emptyCell {
+  background: #f0f0f0;
+  cursor: pointer;
+}
+
+.emptyCell:hover {
+  background: #e0e0e0;
+}
+
+.selectedCell {
+  background: #FFD93D;
+  color: #000;
+}
+
+.blockedCell {
+  background: #333;
+}
+
+.clueCell {
+  position: relative;
+  background: #333;
+  color: white;
+  font-size: 0.8em;
+}
+
+.clueDown {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+}
+
+.clueRight {
+  position: absolute;
+  bottom: 2px;
+  left: 2px;
+}
+
+.numberPad {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  max-width: 300px;
+}
+
+.numBtn {
+  padding: 15px;
+  font-size: 1.2em;
+  background: #4ECDC4;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.numBtn:hover {
+  transform: scale(1.05);
+  background: #45b8b0;
+}
+
+.clearBtn {
+  grid-column: span 2;
+  background: #FF6B6B;
+}
+
+.clearBtn:hover {
+  background: #ff5252;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  background: rgba(0, 0, 0, 0.95);
+  padding: 30px;
+  border-radius: 15px;
+  max-width: 600px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+}
+
+.closeButton {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  color: #FFD93D;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 5px 10px;
+  transition: transform 0.3s ease;
+}
+
+.closeButton:hover {
+  transform: scale(1.1);
+}
+
+.rulesContent {
+  margin: 20px 0;
+  text-align: left;
+}
+
+.rulesSection {
+  margin: 20px 0;
+}
+
+.rulesSectionTitle {
+  color: #4ECDC4;
+  margin-bottom: 15px;
+}
+
+.winMessage {
+  margin: 30px 0;
+  font-size: 1.3em;
+  color: #4ECDC4;
+  position: relative;
+}
+
+.sparkles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.sparkle {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: #FFD93D;
+  border-radius: 50%;
+  animation: sparkle 1.5s infinite;
+}
+
+.winButtons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.button {
+  font-family: 'Poppins', sans-serif;
+  padding: 12px 25px;
+  font-size: 1.1em;
+  cursor: pointer;
+  background: #4ECDC4;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.button:hover {
+  transform: scale(1.05);
+}
+
+.startButton {
+  font-size: 1.1em;
+  padding: 12px 25px;
+  margin: 10px;
+}
+
+.rulesButton {
+  font-size: 1.1em;
+  padding: 12px 25px;
+  margin: 10px;
+  background: rgba(255, 217, 61, 0.2);
+}
+
+.rulesButton:hover {
+  background: rgba(255, 217, 61, 0.3);
+}
+
+.nextLevelButton {
+  background: #FFD93D;
+  color: #000;
+}
+
+.nextLevelButton:hover {
+  background: #ffcc00;
+}
+
+@keyframes sparkle {
+  0% { transform: scale(0) rotate(0deg); opacity: 0; }
+  50% { transform: scale(1) rotate(180deg); opacity: 1; }
+  100% { transform: scale(0) rotate(360deg); opacity: 0; }
+}
+
+@media (max-width: 768px) {
+  .grid {
+      grid-template-columns: repeat(8, 40px);
+  }
+
+  .cell {
+      width: 40px;
+      height: 40px;
+      font-size: 0.9em;
+  }
+
+  .numberPad {
+      grid-template-columns: repeat(3, 1fr);
+  }
+
+  .numBtn {
+      padding: 10px;
+      font-size: 1em;
+  }
+
+  .winButtons {
+      flex-direction: column;
+  }
+}

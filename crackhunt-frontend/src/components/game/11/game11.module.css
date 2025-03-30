@@ -1,0 +1,151 @@
+.container {
+    text-align: center;
+    background-color: #1e1e1e;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    max-width: 500px;
+    width: 100%;
+    margin: 2rem auto;
+}
+
+.title {
+    color: #4CAF50;
+    margin-bottom: 1.5rem;
+    font-weight: 300;
+    letter-spacing: 1px;
+    font-size: 2rem;
+}
+
+.board {
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    gap: 2px;
+    background-color: #333;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    margin-bottom: 1.5rem;
+}
+
+.cell {
+    width: 100%;
+    height: 50px;
+    text-align: center;
+    border: 1px solid #444;
+    font-size: 1.4rem;
+    font-weight: bold;
+    outline: none;
+    background-color: #2a2a2a;
+    color: #4CAF50;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.cell:disabled {
+    background-color: #1a1a1a;
+    color: #666;
+    cursor: not-allowed;
+}
+
+.cell:focus {
+    background-color: #3a3a3a;
+    border-color: #4CAF50;
+}
+
+.button {
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.button:hover {
+    background-color: #45a049;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.4);
+}
+
+.feedback {
+    margin-top: 1.5rem;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #ff6b6b;
+    min-height: 30px;
+}
+
+.winMessage {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(135deg, #2a2a2a, #1e1e1e);
+    padding: 2.5rem;
+    border-radius: 20px;
+    color: white;
+    text-align: center;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+    z-index: 100;
+    max-width: 400px;
+    width: 90%;
+    animation: fadeIn 0.3s;
+}
+
+.winTitle {
+    color: #4CAF50;
+    margin: 0 0 1rem;
+    font-size: 2rem;
+}
+
+.winButtons {
+    margin-top: 1.5rem;
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.winButtons button {
+    flex: 1;
+    margin-top: 0;
+}
+
+.nextLevelButton {
+    background-color: #2196F3;
+}
+
+.nextLevelButton:hover {
+    background-color: #1e88e5;
+}
+
+@keyframes fadeIn {
+    from { 
+        opacity: 0; 
+        transform: translate(-50%, -60%); 
+    }
+    to { 
+        opacity: 1; 
+        transform: translate(-50%, -50%); 
+    }
+}
+
+@media (max-width: 600px) {
+    .cell {
+        height: 40px;
+        font-size: 1.2rem;
+    }
+    
+    .container {
+        padding: 1.5rem;
+    }
+    
+    .title {
+        font-size: 1.8rem;
+    }
+}

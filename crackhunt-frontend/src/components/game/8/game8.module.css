@@ -1,0 +1,446 @@
+.mastermindContainer {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #121212, #2c2c2c);
+    color: white;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+    margin: 0;
+    width: 100%;
+}
+
+.startScreen, 
+.gameScreen {
+    background: rgba(30, 30, 30, 0.9);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 
+        0 15px 35px rgba(0, 0, 0, 0.6), 
+        0 0 20px rgba(78, 205, 196, 0.2);
+    max-width: 800px;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(78, 205, 196, 0.2);
+    margin: 0 auto;
+}
+
+.startScreen::before, 
+.gameScreen::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(
+        circle at center, 
+        rgba(78, 205, 196, 0.1) 0%, 
+        transparent 60%
+    );
+    animation: subtleGlow 10s infinite alternate;
+    z-index: -1;
+}
+
+@keyframes subtleGlow {
+    0% {
+        transform: rotate(0deg) scale(1);
+        opacity: 0.5;
+    }
+    100% {
+        transform: rotate(360deg) scale(1.2);
+        opacity: 0.7;
+    }
+}
+
+h1, h2 {
+    color: #FFD93D;
+    margin-bottom: 20px;
+    text-shadow: 0 0 10px rgba(255, 217, 61, 0.5);
+}
+
+.instructions {
+    margin: 30px 0;
+    text-align: left;
+}
+
+.instructions p {
+    margin: 15px 0;
+    font-size: 0.9em;
+    color: #fff;
+}
+
+.colorGuide {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.colorSample {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 2px solid white;
+}
+
+button {
+    font-family: 'Poppins', sans-serif;
+    padding: 12px 25px;
+    font-size: 1em;
+    cursor: pointer;
+    background: #FFD93D;
+    border: none;
+    border-radius: 5px;
+    color: #000;
+    transition: all 0.3s ease;
+    margin: 5px;
+}
+
+button:hover {
+    transform: scale(1.05);
+    background: #FFE169;
+}
+
+button:disabled {
+    background: #666;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.startButton {
+    font-size: 1.2em;
+    padding: 15px 30px;
+    background: #4ECDC4;
+    color: #000;
+    margin-bottom: 10px;
+}
+
+.startButton:hover {
+    background: #45b8b0;
+}
+
+.rulesButton {
+    background: rgba(255, 217, 61, 0.2);
+    color: white;
+}
+
+.rulesButton:hover {
+    background: rgba(255, 217, 61, 0.3);
+}
+
+.gameHeader {
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.gameInfo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.gameBoard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.attemptsContainer {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 10px;
+    width: 100%;
+    max-height: 300px;
+    overflow-y: auto;
+    padding: 10px;
+}
+
+.attemptRow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+.pegs {
+    display: flex;
+    gap: 10px;
+}
+
+.guessPeg {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    border: 2px solid white;
+    cursor: pointer;
+}
+
+.empty {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.feedback {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 5px;
+    padding: 5px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+}
+
+.feedbackPeg {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.black {
+    background-color: #000;
+    border-color: #fff;
+}
+
+.white {
+    background-color: #fff;
+    border-color: #000;
+}
+
+.empty {
+    background-color: transparent;
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.colorPicker {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    width: 100%;
+    max-width: 400px;
+}
+
+.colors {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.colorOption {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid white;
+    transition: transform 0.2s;
+}
+
+.colorOption:hover {
+    transform: scale(1.1);
+}
+
+.currentGuess {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin: 10px 0;
+}
+
+.checkButton {
+    padding: 12px 25px;
+    font-size: 1em;
+    background: #4ECDC4;
+    color: #000;
+}
+
+.checkButton:hover {
+    background: #45b8b0;
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modalContent {
+    background: rgba(0, 0, 0, 0.9);
+    padding: 30px;
+    border-radius: 15px;
+    max-width: 500px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    position: relative;
+}
+
+.closeButton {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 1.5em;
+    cursor: pointer;
+    padding: 5px;
+    line-height: 1;
+}
+
+.closeButton:hover {
+    color: #FFD93D;
+    transform: scale(1.1);
+}
+
+.rulesContent {
+    text-align: left;
+    margin: 20px 0;
+}
+
+.rulesSection {
+    margin: 20px 0;
+}
+
+.rulesSection h3 {
+    color: #FFD93D;
+    margin-bottom: 10px;
+}
+
+.rulesSection ul {
+    list-style-type: none;
+    padding-left: 20px;
+}
+
+.rulesSection ul li {
+    margin: 10px 0;
+    position: relative;
+}
+
+.rulesSection ul li:before {
+    content: "•";
+    color: #FFD93D;
+    position: absolute;
+    left: -20px;
+}
+
+.feedbackGuide {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.feedbackItem {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.winScreen, 
+.gameOverScreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1001;
+}
+
+.winTitle {
+    font-size: 2.5em;
+    color: #4ECDC4;
+    text-shadow: 0 0 15px rgba(78, 205, 196, 0.7);
+    animation: winPulse 1.5s infinite;
+}
+
+.winButtons {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+.secretCode {
+    display: flex;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+@keyframes winPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+/* Scrollbar styles */
+.attemptsContainer::-webkit-scrollbar {
+    width: 8px;
+}
+
+.attemptsContainer::-webkit-scrollbar-track {
+    background: rgba(255,255,255,0.1);
+}
+
+.attemptsContainer::-webkit-scrollbar-thumb {
+    background: #4ECDC4;
+    border-radius: 4px;
+}
+
+.attemptsContainer::-webkit-scrollbar-thumb:hover {
+    background: #45b8b0;
+}
+
+@media (max-width: 600px) {
+    .startScreen, 
+    .gameScreen {
+        padding: 20px;
+        margin: 0 10px;
+        width: calc(100% - 20px);
+    }
+
+    .guessPeg, 
+    .colorOption {
+        width: 30px;
+        height: 30px;
+    }
+
+    .feedbackPeg {
+        width: 12px;
+        height: 12px;
+    }
+
+    .winButtons {
+        flex-direction: column;
+    }
+
+    h1 {
+        font-size: 1.8em;
+    }
+
+    .instructions p {
+        font-size: 0.8em;
+    }
+
+    .modalContent {
+        padding: 20px;
+    }
+}
