@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import "./games.css";
 import background from "../assets/images/homebackground.png";
 import trees1 from "../assets/svgs/trees.svg";
@@ -11,13 +12,21 @@ const Profile = () => {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [unlockedLevels, setUnlockedLevels] = useState(1); 
+  const navigate = useNavigate();
 
   useEffect(() => {
+
     axios
       .get("http://127.0.0.1:8000/api/users/", { withCredentials: true })
       .then(response => {
         setUserData(response.data);
         setLoading(false);
+        
+  
+        if (response.data.completedLevels) {
+          setUnlockedLevels(response.data.completedLevels + 1); 
+        }
       })
       .catch(error => {
         setError("Failed to load profile");
@@ -25,9 +34,34 @@ const Profile = () => {
       });
   }, []);
 
+  const handleLevelClick = (levelNumber) => {
+
+    if (levelNumber <= unlockedLevels) {
+
+      navigate(`/game/${levelNumber}`);
+    } else {
+ 
+      alert(`You need to complete Level ${levelNumber - 1} first!`);
+    }
+  };
+
+
+  const renderLevelBox = (levelNumber) => {
+    const isUnlocked = levelNumber <= unlockedLevels;
+    
+    return (
+      <div 
+        className={`game1 ${isUnlocked ? 'unlocked' : 'locked'}`}
+        onClick={() => handleLevelClick(levelNumber)}
+      >
+        Level {levelNumber}
+        {!isUnlocked && <div className="lock-icon">🔒</div>}
+      </div>
+    );
+  };
+
   return (
     <div className="home-container">
-      {/* Background Image */}
       <div className="background-wrapper">
         <img src={background} alt="Background" className="background-image" />
       </div>
@@ -47,36 +81,31 @@ const Profile = () => {
       <div className="maingridtemplateforgamesparent">
         <div className="maingridtemplateforgames">
             <div className="gamesrow1">
-            <div className="game1"></div>
-            <div className="game2"></div>
-            <div className="game3"></div>
-            <div className="game4"></div>
+              {renderLevelBox(1)}
+              {renderLevelBox(2)}
+              {renderLevelBox(3)}
+              {renderLevelBox(4)}
             </div>
             <div className="gamesrow2">
-            <div className="game5"></div>
-            <div className="game6"></div>
-            <div className="game7"></div>
-            <div className="game8"></div>
+              {renderLevelBox(5)}
+              {renderLevelBox(6)}
+              {renderLevelBox(7)}
+              {renderLevelBox(8)}
             </div>
             <div className="gamesrow3">
-            <div className="game9"></div>
-            <div className="game10"></div>
-            <div className="game11"></div>
-            <div className="game12"></div>
+              {renderLevelBox(9)}
+              {renderLevelBox(10)}
+              {renderLevelBox(11)}
+              {renderLevelBox(12)}
             </div>
             <div className="gamesrow4">
-            <div className="game13"></div>
-            <div className="game14"></div>
-            <div className="game15"></div>
-            <div className="game16"></div>
+              {renderLevelBox(13)}
+              {renderLevelBox(14)}
+              {renderLevelBox(15)}
+              {renderLevelBox(16)}
             </div>
-            
-            
-
         </div>
       </div>
-
-      
     </div>
   );
 };

@@ -50,37 +50,29 @@
     padding: 10px;
   }
   .game1{
-    background-color: rebeccapurple;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: black;
+    opacity: 65%;
+    border: solid 8px;
+    border-color: brown ;
     height: 140px;
     flex: 1;
     max-width: 300px;
+    font-family: Koulen;
+    font-style: inherit;
+    font-size: 50px;
+    z-index: 50;
+    color: #FFD700;;
+    transition: all 0.2s ease;
     
     border-radius: 25px;
   }
-  .game2{
-    background-color: rebeccapurple;
-    height: 140px;
-    flex: 1;
-    max-width: 300px;
-    
-    border-radius: 25px;
+  .game1:hover{
+    transform: scale(1.1);
   }
-  .game3{
-    background-color: rebeccapurple;
-    height: 140px;
-    flex: 1;
-    max-width: 300px;
-    
-    border-radius: 25px;
-  }
-  .game4{
-    background-color: rebeccapurple;
-    height: 140px;
-    flex: 1;
-    max-width: 300px;
-    
-    border-radius: 25px;
-  }
+
   .gamesrow2{
     grid-row: 2/3;
     z-index: 61;
@@ -89,38 +81,7 @@
     align-items: center;
     padding: 10px;
   }
-  .game5{
-    background-color: rebeccapurple;
-    height: 140px;
-    flex: 1;
-    max-width: 300px;
-    
-    border-radius: 25px;
-  }
-  .game6{
-    background-color: rebeccapurple;
-    height: 140px;
-    flex: 1;
-    max-width: 300px;
-    
-    border-radius: 25px;
-  }
-  .game7{
-    background-color: rebeccapurple;
-    height: 140px;
-    flex: 1;
-    max-width: 300px;
-    
-    border-radius: 25px;
-  }
-  .game8{
-    background-color: rebeccapurple;
-    height: 140px;
-    flex: 1;
-    max-width: 300px;
-    
-    border-radius: 25px;
-  }
+
   .gamesrow3{
     grid-row: 3/4;
     z-index: 61;
@@ -129,38 +90,7 @@
     align-items: center;
     padding: 10px;
   }
-  .game9{
-    background-color: rebeccapurple;
-    height: 140px;
-    flex: 1;
-    max-width: 300px;
-    
-    border-radius: 25px;
-  }
-  .game10{
-    background-color: rebeccapurple;
-    height: 140px;
-    flex: 1;
-    max-width: 300px;
-    
-    border-radius: 25px;
-  }
-  .game11{
-    background-color: rebeccapurple;
-    height: 140px;
-    flex: 1;
-    max-width: 300px;
-    
-    border-radius: 25px;
-  }
-  .game12{
-    background-color: rebeccapurple;
-    height: 140px;
-    flex: 1;
-    max-width: 300px;
-    
-    border-radius: 25px;
-  }
+
   .gamesrow4{
     grid-row: 4/5;
     z-index: 61;
@@ -169,37 +99,94 @@
     align-items: center;
     padding: 10px;
   }
-  .game13{
-    background-color: rebeccapurple;
-    height: 140px;
-    flex: 1;
-    max-width: 300px;
-    
-    border-radius: 25px;
-  }
-  .game14{
-    background-color: rebeccapurple;
-    height: 140px;
-    flex: 1;
-    max-width: 300px;
-    
-    border-radius: 25px;
-  }
-  .game15{
-    background-color: rebeccapurple;
-    height: 140px;
-    flex: 1;
-    max-width: 300px;
-    
-    border-radius: 25px;
-  }
-  .game16{
-    background-color: rebeccapurple;
-    height: 140px;
-    flex: 1;
-    max-width: 300px;
-    
-    border-radius: 25px;
-  }
 
+/* Add these to your games.css file */
+
+/* Level box styling */
+.game1 {
+  position: relative;
+  background-color: #4CAF50;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  font-weight: bold;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Unlocked level styling */
+.game1.unlocked {
+  background-color: #4CAF50;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.game1.unlocked:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+/* Locked level styling */
+.game1.locked {
+  background-color: #a0a0a0;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* Lock icon */
+.lock-icon {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  font-size: 1.2rem;
+}
+
+/* Game page styling */
+.game-page {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.game-container {
+  background-color: white;
+  border-radius: 15px;
+  padding: 30px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  margin-top: 30px;
+}
+
+.game-content {
+  margin-top: 20px;
+}
+
+.complete-button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: background-color 0.3s;
+}
+
+.complete-button:hover {
+  background-color: #3e8e41;
+}
+
+.completion-message {
+  text-align: center;
+  margin-top: 100px;
+  padding: 30px;
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.completion-message h2 {
+  color: #4CAF50;
+  margin-bottom: 20px;
+}
   
