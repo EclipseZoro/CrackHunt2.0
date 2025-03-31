@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "./game1.module.css";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const words = [
   "javascript", "react", "developer", "computer", "algorithm",
@@ -13,11 +14,14 @@ const Hangman = () => {
   const [mistakes, setMistakes] = useState(0);
   const [gameOver, setGameOver] = useState(false);
   const [levelCompleted, setLevelCompleted] = useState(false);
+  const [startTime, setStartTime] = useState(Date.now());
   const maxMistakes = 6;
   const navigate = useNavigate();
+  const currentLevel = 1; // Set this based on the current game level
 
   useEffect(() => {
     setWord(words[Math.floor(Math.random() * words.length)].toUpperCase());
+    setStartTime(Date.now());
   }, []);
 
   const handleGuess = (letter) => {
@@ -37,17 +41,47 @@ const Hangman = () => {
       .join(" ");
   };
 
+  const updateUserScore = async () => {
+    const endTime = Date.now();
+    const completionTime = Math.floor((endTime - startTime) / 1000); // Convert to seconds
+    
+    try {
+      const token = localStorage.getItem('accessToken'); // Assuming you store JWT in localStorage
+      const response = await axios.post(
+        "http://127.0.0.1:8000/api/leaderboard/update-score/",
+        {
+          level_completed: currentLevel,
+          completion_time: completionTime
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
+      console.log("Score updated:", response.data);
+      return true;
+    } catch (error) {
+      console.error("Failed to update score:", error);
+      return false;
+    }
+  };
+
   useEffect(() => {
     if (mistakes >= maxMistakes) {
       setGameOver(true);
     } else if (word && word.split("").every(letter => guessedLetters.includes(letter))) {
       setGameOver(true);
       setLevelCompleted(true);
-      // Automatically navigate to next level after 2 seconds
-      const timer = setTimeout(() => {
-        navigate("/game/2");
-      }, 2000);
-      return () => clearTimeout(timer);
+      
+      // Update score in the backend
+      updateUserScore().then(success => {
+        // Navigate to next level after 2 seconds
+        const timer = setTimeout(() => {
+          navigate("/game/2");
+        }, 2000);
+        return () => clearTimeout(timer);
+      });
     }
   }, [mistakes, guessedLetters, word, navigate]);
 
@@ -57,6 +91,7 @@ const Hangman = () => {
     setMistakes(0);
     setGameOver(false);
     setLevelCompleted(false);
+    setStartTime(Date.now());
   };
 
   return (

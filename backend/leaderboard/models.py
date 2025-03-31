@@ -7,7 +7,8 @@ class Leaderboard(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     score = models.IntegerField(default=0)
     total_time = models.IntegerField(default=0)  # in seconds
-
+    completed_levels = models.IntegerField(default=0)  # New field
+    
     def __str__(self):
         return f"{self.user.username} - {self.score}"
 
@@ -22,4 +23,3 @@ def save_user_leaderboard(sender, instance, **kwargs):
         instance.leaderboard.save()
     except Leaderboard.DoesNotExist:
         Leaderboard.objects.create(user=instance)
-

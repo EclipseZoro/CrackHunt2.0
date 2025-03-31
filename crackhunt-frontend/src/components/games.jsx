@@ -17,7 +17,7 @@ const Games = () => {
 
   useEffect(() => {
     axios
-      .get("http://127.0.0.1:8000/api/users/", { withCredentials: true })
+      .get("http://127.0.0.1:8000/api/leaderboard/", { withCredentials: true }) // token auth
       .then(response => {
         setUserData(response.data);
         setLoading(false);
@@ -33,7 +33,7 @@ const Games = () => {
 
   const handleLevelClick = (levelNumber) => {
     if (levelNumber <= unlockedLevels) {
-      navigate(`/game/level${levelNumber}`);
+      navigate(`/game/${levelNumber}`);
     } else {
       alert(`You need to complete Level ${levelNumber - 1} first!`);
     }
