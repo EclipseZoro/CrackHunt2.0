@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './game8.module.css';
+import axios from 'axios';
 
 const MastermindGame = () => {
   const COLORS = [
@@ -24,6 +25,35 @@ const MastermindGame = () => {
   const [gameWon, setGameWon] = useState(false);
   const [showRules, setShowRules] = useState(false);
   const [gameStarted, setGameStarted] = useState(false);
+  const [startTime, setStartTime] = useState(Date.now());
+  const currentLevel = 8;
+
+  const updateUserScore = async () => {
+    const endTime = Date.now();
+    const completionTime = Math.floor((endTime - startTime) / 1000); // Convert to seconds
+    
+    try {
+      const token = localStorage.getItem('accessToken');
+      const response = await axios.post(
+        "http://127.0.0.1:8000/api/leaderboard/update-score/",
+        {
+          level_completed: currentLevel,
+          completion_time: completionTime,
+          moves: MAX_ATTEMPTS - attemptsLeft // Number of attempts used
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
+      console.log("Score updated:", response.data);
+      return true;
+    } catch (error) {
+      console.error("Failed to update score:", error);
+      return false;
+    }
+  };
 
   const generateSecretCode = () => {
     const code = [];
@@ -41,6 +71,7 @@ const MastermindGame = () => {
     setGameOver(false);
     setGameWon(false);
     setGameStarted(true);
+    setStartTime(Date.now());
   };
 
   const addColorToGuess = (colorIndex) => {
@@ -108,7 +139,9 @@ const MastermindGame = () => {
     if (blackPegs === CODE_LENGTH) {
       setGameWon(true);
       setGameOver(true);
-      setTimeout(() => navigate('/game/9'), 2000); // Navigate to Level 9 after 2 seconds
+      updateUserScore().then(() => {
+        setTimeout(() => navigate('/game/9'), 2000);
+      });
     } else if (attemptsLeft - 1 === 0) {
       setGameOver(true);
     }

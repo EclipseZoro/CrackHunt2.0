@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styles from './game16.module.css';
+import axios from 'axios';
 
 const HexGame = () => {
   const SIZE = 11;
@@ -8,6 +10,10 @@ const HexGame = () => {
   const [winner, setWinner] = useState(null);
   const [aiThinking, setAiThinking] = useState(false);
   const [gameCompleted, setGameCompleted] = useState(false);
+  const [startTime, setStartTime] = useState(Date.now());
+  const [moves, setMoves] = useState(0);
+  const navigate = useNavigate();
+  const currentLevel = 16;
 
   // Hex neighbor offsets for even-r offset coordinates
   const evenROffsets = {
@@ -23,6 +29,34 @@ const HexGame = () => {
     ]
   };
 
+  // Add updateUserScore function
+  const updateUserScore = async () => {
+    const endTime = Date.now();
+    const completionTime = Math.floor((endTime - startTime) / 1000); // Convert to seconds
+    
+    try {
+      const token = localStorage.getItem('accessToken');
+      const response = await axios.post(
+        "http://127.0.0.1:8000/api/leaderboard/update-score/",
+        {
+          level_completed: currentLevel,
+          completion_time: completionTime,
+          moves: moves // Number of moves made
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
+      console.log("Score updated:", response.data);
+      return true;
+    } catch (error) {
+      console.error("Failed to update score:", error);
+      return false;
+    }
+  };
+
   useEffect(() => {
     resetGame();
   }, []);
@@ -33,6 +67,8 @@ const HexGame = () => {
     setWinner(null);
     setAiThinking(false);
     setGameCompleted(false);
+    setStartTime(Date.now());
+    setMoves(0);
   };
 
   const getNeighbors = (x, y) => {
@@ -157,11 +193,17 @@ const HexGame = () => {
     const newBoard = board.map(row => [...row]);
     newBoard[y][x] = currentPlayer;
     setBoard(newBoard);
+    setMoves(prevMoves => prevMoves + 1);
 
     if (checkWin(newBoard, currentPlayer)) {
       setWinner(currentPlayer);
       if (currentPlayer === 'red') {
         setGameCompleted(true);
+        updateUserScore().then(() => {
+          setTimeout(() => {
+            navigate('/game-complete');
+          }, 2000);
+        });
       }
       return;
     }
@@ -290,6 +332,19 @@ const HexGame = () => {
               Your strategic thinking and problem-solving skills have been 
               proven exceptional.
             </p>
+            <div className={styles.gameStats}>
+              <p>Total Moves: {moves}</p>
+            </div>
+            <button 
+              className={styles.continueButton}
+              onClick={() => {
+                updateUserScore().then(() => {
+                  navigate('/game-complete');
+                });
+              }}
+            >
+              Continue
+            </button>
           </div>
         </div>
       )}
@@ -302,6 +357,9 @@ const HexGame = () => {
             {aiThinking ? 'AI is Thinking...' : winner ? 
               `${winner === 'red' ? 'You' : 'AI'} Won!` : 
               currentPlayer === 'red' ? 'Your Turn (Red)' : 'AI Turn (Blue)'}
+          </div>
+          <div className={styles.movesCounter}>
+            Moves: {moves}
           </div>
         </div>
         
@@ -319,6 +377,18 @@ const HexGame = () => {
         
         <div className={styles.controls}>
           <button onClick={resetGame} className={styles.button}>New Game</button>
+          {winner && winner === 'red' && (
+            <button 
+              className={styles.button}
+              onClick={() => {
+                updateUserScore().then(() => {
+                  navigate('/game-complete');
+                });
+              }}
+            >
+              Next Level
+            </button>
+          )}
         </div>
       </div>
     </div>

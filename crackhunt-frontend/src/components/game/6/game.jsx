@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './game6.module.css';
+import axios from 'axios';
 
 const BOARD_SIZE = 7;
 const INITIAL_BOARD = [
@@ -19,70 +20,87 @@ const PegSolitaire = () => {
   const [moves, setMoves] = useState(0);
   const [gameOver, setGameOver] = useState(false);
   const [won, setWon] = useState(false);
+  const [startTime, setStartTime] = useState(Date.now());
   const navigate = useNavigate();
+  const currentLevel = 6; // Set this based on the current game level
 
-  // Reset the game
+  useEffect(() => {
+    resetGame();
+  }, []);
+
+  const updateUserScore = async () => {
+    const endTime = Date.now();
+    const completionTime = Math.floor((endTime - startTime) / 1000);
+    
+    try {
+      const token = localStorage.getItem('accessToken');
+      const response = await axios.post(
+        "http://127.0.0.1:8000/api/leaderboard/update-score/",
+        {
+          level_completed: currentLevel,
+          completion_time: completionTime
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
+      console.log("Score updated:", response.data);
+      return true;
+    } catch (error) {
+      console.error("Failed to update score:", error);
+      return false;
+    }
+  };
+
   const resetGame = () => {
     setBoard(JSON.parse(JSON.stringify(INITIAL_BOARD)));
     setSelectedPeg(null);
     setMoves(0);
     setGameOver(false);
     setWon(false);
+    setStartTime(Date.now());
   };
 
-  // Handle peg selection
   const handlePegClick = (row, col) => {
     if (gameOver) return;
 
-    // If no peg is selected and clicked cell has a peg, select it
     if (selectedPeg === null && board[row][col] === 1) {
       setSelectedPeg({ row, col });
       return;
     }
-
-    // If same peg is clicked again, deselect it
+    
     if (selectedPeg && selectedPeg.row === row && selectedPeg.col === col) {
       setSelectedPeg(null);
       return;
     }
 
-    // If a peg is already selected, try to move it
     if (selectedPeg) {
-      if (board[row][col] === 2) {
-        // Check if this is a valid jump
-        if (isValidMove(selectedPeg.row, selectedPeg.col, row, col)) {
-          makeMove(selectedPeg.row, selectedPeg.col, row, col);
-        }
+      if (board[row][col] === 2 && isValidMove(selectedPeg.row, selectedPeg.col, row, col)) {
+        makeMove(selectedPeg.row, selectedPeg.col, row, col);
       } else if (board[row][col] === 1) {
-        // Select the new peg
         setSelectedPeg({ row, col });
       }
     }
   };
 
-  // Check if a move is valid
   const isValidMove = (fromRow, fromCol, toRow, toCol) => {
-    // Check if moving exactly 2 spaces in one direction
     const rowDiff = Math.abs(toRow - fromRow);
     const colDiff = Math.abs(toCol - fromCol);
-
     if ((rowDiff === 2 && colDiff === 0) || (rowDiff === 0 && colDiff === 2)) {
       const midRow = (fromRow + toRow) / 2;
       const midCol = (fromCol + toCol) / 2;
-      
-      // Check if there's a peg in the middle
       return board[midRow][midCol] === 1;
     }
     return false;
   };
 
-  // Execute a valid move
   const makeMove = (fromRow, fromCol, toRow, toCol) => {
     const newBoard = [...board.map(row => [...row])];
     const midRow = (fromRow + toRow) / 2;
     const midCol = (fromCol + toCol) / 2;
 
-    // Move the peg
     newBoard[fromRow][fromCol] = 2;
     newBoard[midRow][midCol] = 2;
     newBoard[toRow][toCol] = 1;
@@ -90,102 +108,51 @@ const PegSolitaire = () => {
     setBoard(newBoard);
     setSelectedPeg(null);
     setMoves(moves + 1);
-
-    // Check win condition
     checkWinCondition(newBoard);
   };
 
-  // Check if the game is won
   const checkWinCondition = (currentBoard) => {
     let pegCount = 0;
     for (let i = 0; i < BOARD_SIZE; i++) {
       for (let j = 0; j < BOARD_SIZE; j++) {
         if (currentBoard[i][j] === 1) pegCount++;
-        if (pegCount > 1) return;
       }
     }
-
     if (pegCount === 1) {
       setWon(true);
-      setGameOver(true);
-      setTimeout(() => navigate('/game/7'), 2000); // Navigate to Level 7 after 2 seconds
-    } else {
-      // Check if any valid moves remain
-      if (!hasValidMoves(currentBoard)) {
-        setGameOver(true);
-      }
+      updateUserScore().then(() => {
+        setTimeout(() => navigate("/game/level7"), 2000);
+      });
     }
-  };
-
-  // Check if any valid moves remain
-  const hasValidMoves = (currentBoard) => {
-    for (let i = 0; i < BOARD_SIZE; i++) {
-      for (let j = 0; j < BOARD_SIZE; j++) {
-        if (currentBoard[i][j] === 1) {
-          // Check all four directions for possible jumps
-          if (i > 1 && currentBoard[i-1][j] === 1 && currentBoard[i-2][j] === 2) return true;
-          if (i < BOARD_SIZE-2 && currentBoard[i+1][j] === 1 && currentBoard[i+2][j] === 2) return true;
-          if (j > 1 && currentBoard[i][j-1] === 1 && currentBoard[i][j-2] === 2) return true;
-          if (j < BOARD_SIZE-2 && currentBoard[i][j+1] === 1 && currentBoard[i][j+2] === 2) return true;
-        }
-      }
-    }
-    return false;
-  };
-
-  // Get cell class based on its state
-  const getCellClass = (row, col, value) => {
-    if (value === 0) return `${styles.cell} ${styles.invalid}`;
-    if (value === 2) return `${styles.cell} ${styles.empty}`;
-    
-    // Highlight selected peg
-    if (selectedPeg && selectedPeg.row === row && selectedPeg.col === col) {
-      return `${styles.cell} ${styles.peg} ${styles.selected}`;
-    }
-    return `${styles.cell} ${styles.peg}`;
   };
 
   return (
-    <div className={styles.pegSolitaire}>
-      <h1>Peg Solitaire</h1>
-      <div className={styles.gameInfo}>
-        <span>Moves: {moves}</span>
-        <button onClick={resetGame}>Reset Game</button>
-      </div>
-      
-      <div className={styles.board}>
-        {board.map((row, rowIndex) => (
-          <div key={`row-${rowIndex}`} className={styles.boardRow}>
-            {row.map((cell, colIndex) => (
-              <div
-                key={`cell-${rowIndex}-${colIndex}`}
-                className={getCellClass(rowIndex, colIndex, cell)}
-                onClick={() => handlePegClick(rowIndex, colIndex)}
-              />
-            ))}
-          </div>
-        ))}
-      </div>
-
-      {gameOver && (
-        <div className={styles.gameOverlay}>
-          <div className={styles.gameOverMessage}>
-            {won ? (
-              <>
-                <h2>Congratulations!</h2>
-                <p>You won in {moves} moves!</p>
-                <p>Proceeding to Level 7...</p>
-              </>
-            ) : (
-              <>
-                <h2>Game Over</h2>
-                <p>No more valid moves</p>
-              </>
-            )}
-            <button onClick={resetGame}>Play Again</button>
-          </div>
+    <div className={styles.gameWrapper}>
+      <div className={styles.gameContainer}>
+        <h2>Peg Solitaire</h2>
+        <div className={styles.board}>
+          {board.map((row, rowIndex) => (
+            <div key={rowIndex} className={styles.row}>
+              {row.map((cell, colIndex) => (
+                <div key={colIndex} className={styles.cell} onClick={() => handlePegClick(rowIndex, colIndex)}>
+                  {cell === 1 && <div className={styles.peg} />}
+                  {cell === 2 && <div className={styles.empty} />}
+                </div>
+              ))}
+            </div>
+          ))}
         </div>
-      )}
+        <p className={styles.moves}>Moves: {moves}</p>
+        {(gameOver || won) && (
+          <div className={styles.modalOverlay}>
+            <div className={styles.modal}>
+              <h3>{won ? "You Win! 🎉" : "Game Over!"}</h3>
+              <p>Total Moves: {moves}</p>
+              <button onClick={resetGame} className={styles.restartBtn}>Restart Game</button>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

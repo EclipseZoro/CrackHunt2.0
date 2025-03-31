@@ -26,6 +26,28 @@ const Sudoku = () => {
     setGrid(puzzle.map((row) => [...row]));
   }, []);
 
+  const updateScore = async (gameId, score) => {
+    try {
+      const response = await fetch("http://localhost:3001/api/updateScore", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({ gameId, score }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update score");
+      }
+
+      const data = await response.json();
+      console.log("Score updated successfully:", data);
+    } catch (error) {
+      console.error("Error updating score:", error);
+    }
+  };
+
   const handleChange = (row, col, value) => {
     if (!/^[1-9]?$/.test(value)) return;
     const newGrid = [...grid];
@@ -67,6 +89,7 @@ const Sudoku = () => {
     if (validateSudoku(grid)) {
       setFeedback("Sudoku is correct!");
       setIsCompleted(true);
+      updateScore(11, 100); // Assuming gameId 11 for Sudoku and score 100 for completion
     } else {
       setFeedback("Sudoku is incorrect.");
     }

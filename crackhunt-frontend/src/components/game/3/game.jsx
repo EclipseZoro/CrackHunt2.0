@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './game3.module.css';
+import axios from 'axios';
 
 const COLORS = ['red', 'blue', 'green', 'yellow'];
 const INITIAL_DELAY = 1000;
@@ -18,6 +19,34 @@ const SimonSays = () => {
   const [gameOver, setGameOver] = useState(false);
   const [winner, setWinner] = useState(false);
   const [activeColor, setActiveColor] = useState(null);
+  const [startTime, setStartTime] = useState(Date.now());
+  const currentLevel = 3; // Set this based on the current game level
+
+  const updateUserScore = async () => {
+    const endTime = Date.now();
+    const completionTime = Math.floor((endTime - startTime) / 1000); // Convert to seconds
+    
+    try {
+      const token = localStorage.getItem('accessToken');
+      const response = await axios.post(
+        "http://127.0.0.1:8000/api/leaderboard/update-score/",
+        {
+          level_completed: currentLevel,
+          completion_time: completionTime
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
+      console.log("Score updated:", response.data);
+      return true;
+    } catch (error) {
+      console.error("Failed to update score:", error);
+      return false;
+    }
+  };
 
   const startGame = useCallback(() => {
     setSequence([]);
@@ -27,6 +56,7 @@ const SimonSays = () => {
     setWinner(false);
     setIsPlaying(true);
     setIsComputerTurn(true);
+    setStartTime(Date.now());
     setTimeout(() => addToSequence(), INITIAL_DELAY);
   }, []);
 
@@ -78,7 +108,9 @@ const SimonSays = () => {
       if (newScore >= WINNING_SCORE) {
         setWinner(true);
         setIsPlaying(false);
-        setTimeout(() => navigate('/game/4'), 2000);
+        updateUserScore().then(() => {
+          setTimeout(() => navigate('/game/4'), 2000);
+        });
         return;
       }
       setTimeout(() => {

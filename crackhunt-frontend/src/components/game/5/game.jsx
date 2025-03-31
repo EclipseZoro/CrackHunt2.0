@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./game5.module.css";
+import axios from "axios";
 
 // Game Constants
 const GRAVITY = -0.1;
@@ -20,8 +21,10 @@ const FlappyBird = () => {
     const [score, setScore] = useState(0);
     const [gameOver, setGameOver] = useState(false);
     const [gameWon, setGameWon] = useState(false);
+    const [startTime, setStartTime] = useState(Date.now());
     const navigate = useNavigate();
     const gameLoopRef = useRef(null);
+    const currentLevel = 5; // Set this based on the current game level
 
     const gameStateRef = useRef({
         birdY: GAME_HEIGHT / 2,
@@ -30,6 +33,32 @@ const FlappyBird = () => {
         score: 0,
         scoredPipes: new Set()
     });
+
+    const updateUserScore = async () => {
+        const endTime = Date.now();
+        const completionTime = Math.floor((endTime - startTime) / 1000); // Convert to seconds
+        
+        try {
+            const token = localStorage.getItem('accessToken');
+            const response = await axios.post(
+                "http://127.0.0.1:8000/api/leaderboard/update-score/",
+                {
+                    level_completed: currentLevel,
+                    completion_time: completionTime
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            );
+            console.log("Score updated:", response.data);
+            return true;
+        } catch (error) {
+            console.error("Failed to update score:", error);
+            return false;
+        }
+    };
 
     useEffect(() => {
         const handleKeyDown = (event) => {
@@ -101,7 +130,9 @@ const FlappyBird = () => {
                 gs.scoredPipes.add(pipe.id);
                 if (gs.score >= WIN_SCORE) {
                     setGameWon(true);
-                    setTimeout(() => navigate("/game/level6"), 2000);
+                    updateUserScore().then(() => {
+                        setTimeout(() => navigate("/game/level6"), 2000);
+                    });
                 }
             }
         }
@@ -125,6 +156,7 @@ const FlappyBird = () => {
         setScore(0);
         setGameOver(false);
         setGameWon(false);
+        setStartTime(Date.now());
         if (gameLoopRef.current) {
             cancelAnimationFrame(gameLoopRef.current);
         }

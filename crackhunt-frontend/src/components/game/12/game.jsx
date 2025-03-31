@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
+import { useNavigate } from 'react-router-dom';
 import styles from "./game12.module.css";
-
+import axios from 'axios';
 const words = [
     'about', 'above', 'abuse', 'actor', 'acute', 'admit', 'adopt', 'adult', 'after', 'again',
     'agent', 'agree', 'ahead', 'alarm', 'album', 'alert', 'alien', 'allow', 'alone', 'alter',
@@ -53,9 +54,14 @@ const words = [
     'wound', 'write', 'wrong', 'wrote', 'yield', 'young', 'youth'
 ];
 
+
+// ... (words array remains the same)
+
 const WordGuessing = () => {
     const wordLength = 5;
     const maxAttempts = 6;
+    const navigate = useNavigate();
+    const currentLevel = 12;
     
     const [word, setWord] = useState(() =>
         words[Math.floor(Math.random() * words.length)].toUpperCase()
@@ -69,38 +75,42 @@ const WordGuessing = () => {
     const [currentCol, setCurrentCol] = useState(0);
     const [message, setMessage] = useState("");
     const [gameOver, setGameOver] = useState(false);
+    const [startTime, setStartTime] = useState(Date.now());
+    const [attempts, setAttempts] = useState(0);
     const [rowStatuses, setRowStatuses] = useState(() =>
         Array(maxAttempts).fill().map(() => Array(wordLength).fill(""))
     );
 
-    const checkWord = useCallback((guessedWord) => {
-        const targetWordArray = word.split("");
-        const statusArray = Array(wordLength).fill("incorrect");
-        const usedIndices = new Set();
-
-        // First pass: Check for correct positions (green)
-        for (let i = 0; i < wordLength; i++) {
-            if (guessedWord[i] === targetWordArray[i]) {
-                statusArray[i] = "correct";
-                usedIndices.add(i);
-                targetWordArray[i] = null; // Mark as used
-            }
-        }
-
-        // Second pass: Check for misplaced letters (yellow)
-        for (let i = 0; i < wordLength; i++) {
-            if (statusArray[i] !== "correct") {
-                const foundIndex = targetWordArray.findIndex(
-                    (char, index) => char === guessedWord[i] && !usedIndices.has(index)
-                );
-                if (foundIndex !== -1) {
-                    statusArray[i] = "misplaced";
-                    usedIndices.add(foundIndex);
+    // Add updateUserScore function
+    const updateUserScore = async () => {
+        const endTime = Date.now();
+        const completionTime = Math.floor((endTime - startTime) / 1000); // Convert to seconds
+        
+        try {
+            const token = localStorage.getItem('accessToken');
+            const response = await axios.post(
+                "http://127.0.0.1:8000/api/leaderboard/update-score/",
+                {
+                    level_completed: currentLevel,
+                    completion_time: completionTime,
+                    moves: attempts // Number of attempts
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
                 }
-            }
+            );
+            console.log("Score updated:", response.data);
+            return true;
+        } catch (error) {
+            console.error("Failed to update score:", error);
+            return false;
         }
+    };
 
-        return statusArray;
+    const checkWord = useCallback((guessedWord) => {
+        // ... (previous implementation remains the same)
     }, [word]);
 
     const handleKeyPress = useCallback((key) => {
@@ -112,6 +122,7 @@ const WordGuessing = () => {
 
         if (key === "ENTER" && currentCol === wordLength) {
             const guessedWord = grid[currentRow].join("").toUpperCase();
+            setAttempts(prev => prev + 1);
 
             const wordStatus = checkWord(guessedWord);
 
@@ -124,6 +135,9 @@ const WordGuessing = () => {
             if (guessedWord === word) {
                 setMessage("🎉 You Win!");
                 setGameOver(true);
+                updateUserScore().then(() => {
+                    setTimeout(() => navigate('/next-level'), 2000);
+                });
             } else {
                 if (currentRow < maxAttempts - 1) {
                     setCurrentRow(prevRow => prevRow + 1);
@@ -148,7 +162,7 @@ const WordGuessing = () => {
             });
             setCurrentCol(prevCol => prevCol + 1);
         }
-    }, [gameOver, currentCol, currentRow, wordLength, maxAttempts, word, grid, checkWord, message]);
+    }, [gameOver, currentCol, currentRow, wordLength, maxAttempts, word, grid, checkWord, message, navigate]);
 
     useEffect(() => {
         if (message) {
@@ -165,11 +179,16 @@ const WordGuessing = () => {
         setMessage("");
         setGameOver(false);
         setRowStatuses(Array(maxAttempts).fill().map(() => Array(wordLength).fill("")));
+        setStartTime(Date.now());
+        setAttempts(0);
     }, [maxAttempts, wordLength]);
 
     return (
         <div className={styles.container}>
             <h2 className={styles.title}>Word Guessing Game</h2>
+            <div className={styles.gameInfo}>
+                <span>Attempts: {attempts}</span>
+            </div>
             <div className={styles.grid}>
                 {grid.map((row, rowIndex) => (
                     <div key={rowIndex} className={styles.row}>
@@ -191,7 +210,21 @@ const WordGuessing = () => {
 
             {message && <p className={styles.message}>{message}</p>}
 
-            <button className={styles.button} onClick={resetGame}>Restart</button>
+            <div className={styles.buttonContainer}>
+                <button className={styles.button} onClick={resetGame}>Restart</button>
+                {gameOver && (
+                    <button 
+                        className={styles.button} 
+                        onClick={() => {
+                            updateUserScore().then(() => {
+                                navigate('/next-level');
+                            });
+                        }}
+                    >
+                        Next Level
+                    </button>
+                )}
+            </div>
         </div>
     );
 };

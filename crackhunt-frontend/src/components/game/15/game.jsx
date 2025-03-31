@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./game15.module.css";
+import axios from 'axios';
 
 const TicTacToe = () => {
   const [board, setBoard] = useState(Array(9).fill(null));
@@ -8,7 +9,38 @@ const TicTacToe = () => {
   const [gameStatus, setGameStatus] = useState("In Progress");
   const [winningLine, setWinningLine] = useState([]);
   const [animationPhase, setAnimationPhase] = useState(false);
+  const [startTime, setStartTime] = useState(Date.now());
+  const [moves, setMoves] = useState(0);
   const navigate = useNavigate();
+  const currentLevel = 15;
+
+  // Add updateUserScore function
+  const updateUserScore = async () => {
+    const endTime = Date.now();
+    const completionTime = Math.floor((endTime - startTime) / 1000); // Convert to seconds
+    
+    try {
+      const token = localStorage.getItem('accessToken');
+      const response = await axios.post(
+        "http://127.0.0.1:8000/api/leaderboard/update-score/",
+        {
+          level_completed: currentLevel,
+          completion_time: completionTime,
+          moves: moves // Number of moves made
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
+      console.log("Score updated:", response.data);
+      return true;
+    } catch (error) {
+      console.error("Failed to update score:", error);
+      return false;
+    }
+  };
 
   const calculateWinner = (squares) => {
     const lines = [
@@ -37,6 +69,7 @@ const TicTacToe = () => {
     const newBoard = [...board];
     newBoard[index] = "X";
     setBoard(newBoard);
+    setMoves(prevMoves => prevMoves + 1);
 
     const result = calculateWinner(newBoard);
     if (result.winner) {
@@ -44,11 +77,13 @@ const TicTacToe = () => {
       setWinningLine(result.line);
       setAnimationPhase(true);
       
-      // If player wins, navigate to next level after 3 seconds
+      // If player wins, update score and navigate to next level after 3 seconds
       if (result.winner === "X") {
-        setTimeout(() => {
-          navigate('/game16');
-        }, 3000);
+        updateUserScore().then(() => {
+          setTimeout(() => {
+            navigate('/game/16');
+          }, 3000);
+        });
       }
       return;
     }
@@ -64,6 +99,7 @@ const TicTacToe = () => {
       const newBoard = [...board];
       newBoard[bestMove] = "O";
       setBoard(newBoard);
+      setMoves(prevMoves => prevMoves + 1);
 
       const result = calculateWinner(newBoard);
       if (result.winner) {
@@ -89,6 +125,8 @@ const TicTacToe = () => {
     setGameStatus("In Progress");
     setWinningLine([]);
     setAnimationPhase(false);
+    setStartTime(Date.now());
+    setMoves(0);
   };
 
   const minimax = (newBoard, depth, isMaximizing) => {
@@ -155,6 +193,9 @@ const TicTacToe = () => {
           <div className={`${styles.status} ${gameStatus !== "In Progress" ? styles.statusHighlight : ""}`}>
             {statusText}
           </div>
+          <div className={styles.movesCounter}>
+            Moves: {moves}
+          </div>
         </div>
         
         <div className={styles.board}>
@@ -175,9 +216,23 @@ const TicTacToe = () => {
           ))}
         </div>
         
-        <button className={styles.resetButton} onClick={resetGame}>
-          Restart Game
-        </button>
+        <div className={styles.buttonContainer}>
+          <button className={styles.resetButton} onClick={resetGame}>
+            Restart Game
+          </button>
+          {gameStatus === "Winner" && (
+            <button 
+              className={styles.nextLevelButton}
+              onClick={() => {
+                updateUserScore().then(() => {
+                  navigate('/game/16');
+                });
+              }}
+            >
+              Next Level
+            </button>
+          )}
+        </div>
       </div>
 
       {gameStatus === "Winner" && animationPhase && (

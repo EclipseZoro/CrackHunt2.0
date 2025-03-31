@@ -1,13 +1,43 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './game7.module.css';
+import axios from 'axios';
 
 const LightsOut = () => {
   const BOARD_SIZE = 5;
   const [gameState, setGameState] = useState('welcome'); // 'welcome', 'playing', 'won'
   const [moves, setMoves] = useState(0);
   const [board, setBoard] = useState(Array(BOARD_SIZE).fill().map(() => Array(BOARD_SIZE).fill(false)));
+  const [startTime, setStartTime] = useState(Date.now());
   const navigate = useNavigate();
+  const currentLevel = 7; // Set this based on the current game level
+
+  const updateUserScore = async () => {
+    const endTime = Date.now();
+    const completionTime = Math.floor((endTime - startTime) / 1000); // Convert to seconds
+    
+    try {
+      const token = localStorage.getItem('accessToken');
+      const response = await axios.post(
+        "http://127.0.0.1:8000/api/leaderboard/update-score/",
+        {
+          level_completed: currentLevel,
+          completion_time: completionTime,
+          moves: moves // Optional: You can also send the number of moves if you want to track efficiency
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
+      console.log("Score updated:", response.data);
+      return true;
+    } catch (error) {
+      console.error("Failed to update score:", error);
+      return false;
+    }
+  };
 
   // Initialize the game board
   useEffect(() => {
@@ -29,6 +59,7 @@ const LightsOut = () => {
     
     setBoard(newBoard);
     setMoves(0);
+    setStartTime(Date.now()); // Reset timer when game starts/resets
   };
 
   // Toggle lights (the clicked cell and adjacent cells)
@@ -66,19 +97,23 @@ const LightsOut = () => {
     const hasWon = currentBoard.every(row => row.every(cell => !cell));
     if (hasWon) {
       setGameState('won');
-      setTimeout(() => navigate('/game/8'), 2000); // Navigate to Level 8 after 2 seconds
+      updateUserScore().then(() => {
+        setTimeout(() => navigate('/game/8'), 2000); // Navigate to Level 8 after 2 seconds
+      });
     }
   };
 
   // Start the game
   const startGame = () => {
     setGameState('playing');
+    setStartTime(Date.now());
     randomizeBoard();
   };
 
   // Restart the game
   const restartGame = () => {
     setGameState('playing');
+    setStartTime(Date.now());
     randomizeBoard();
   };
 
@@ -90,6 +125,7 @@ const LightsOut = () => {
   // Reset the current game
   const resetGame = () => {
     randomizeBoard();
+    setStartTime(Date.now());
   };
 
   return (

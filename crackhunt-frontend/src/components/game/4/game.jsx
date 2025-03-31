@@ -1,15 +1,44 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './game4.module.css';
+import axios from 'axios';
 
 const SlidingPuzzle = () => {
   const [gameState, setGameState] = useState('start'); // 'start', 'playing', 'won'
   const [tiles, setTiles] = useState([]);
   const [isGameWon, setIsGameWon] = useState(false);
   const [message, setMessage] = useState('');
+  const [startTime, setStartTime] = useState(Date.now());
   const navigate = useNavigate();
+  const currentLevel = 4; // Set this based on the current game level
   
   const size = 4; // 4x4 grid
+
+  const updateUserScore = async () => {
+    const endTime = Date.now();
+    const completionTime = Math.floor((endTime - startTime) / 1000); // Convert to seconds
+    
+    try {
+      const token = localStorage.getItem('accessToken');
+      const response = await axios.post(
+        "http://127.0.0.1:8000/api/leaderboard/update-score/",
+        {
+          level_completed: currentLevel,
+          completion_time: completionTime
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
+      console.log("Score updated:", response.data);
+      return true;
+    } catch (error) {
+      console.error("Failed to update score:", error);
+      return false;
+    }
+  };
 
   // Initialize the puzzle
   const createPuzzle = () => {
@@ -79,13 +108,16 @@ const SlidingPuzzle = () => {
     if (currentTiles.slice(0, -1).every((tile, index) => tile === index + 1)) {
       setIsGameWon(true);
       setMessage('Congratulations! You solved the puzzle!');
-      setTimeout(() => navigate('/game/5'), 2000);
+      updateUserScore().then(() => {
+        setTimeout(() => navigate('/game/5'), 2000);
+      });
     }
   };
 
   // Start the game
   const startGame = () => {
     setGameState('playing');
+    setStartTime(Date.now());
     createPuzzle();
     shuffleTiles();
   };

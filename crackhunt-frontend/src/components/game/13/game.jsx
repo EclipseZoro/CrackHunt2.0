@@ -17,6 +17,28 @@ const TowerOfHanoi = () => {
   const colors = ['#FF6B6B', '#4ECDC4', '#FFD93D', '#6C5CE7', '#A8E6CF'];
   const minMoves = Math.pow(2, numberOfDisks) - 1; // 31 for 5 disks
 
+  const updateScore = async (gameId, score) => {
+    try {
+      const response = await fetch("http://localhost:3001/api/updateScore", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({ gameId, score }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update score");
+      }
+
+      const data = await response.json();
+      console.log("Score updated successfully:", data);
+    } catch (error) {
+      console.error("Error updating score:", error);
+    }
+  };
+
   const initializeGame = () => {
     // Clear any existing timer
     if (timerRef.current) {
@@ -92,6 +114,9 @@ const TowerOfHanoi = () => {
     clearInterval(timerRef.current);
     timerRef.current = null;
     setGameState('won');
+    // Calculate score based on performance (fewer moves = higher score)
+    const efficiency = Math.max(0, 100 - Math.max(0, moves - minMoves) * 2);
+    updateScore(13, efficiency); // Assuming gameId 13 for Tower of Hanoi
   };
 
   const formatTime = (seconds) => {

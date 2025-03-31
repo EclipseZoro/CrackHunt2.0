@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './game9.module.css';
+import axios from 'axios'; // Add this import
 
 const MazeGame = () => {
   const [maze, setMaze] = useState([]);
@@ -8,9 +9,40 @@ const MazeGame = () => {
   const [gameWon, setGameWon] = useState(false);
   const [shortestPath, setShortestPath] = useState([]);
   const [showShortestPath, setShowShortestPath] = useState(false);
+  const [startTime, setStartTime] = useState(Date.now());
+  const [moves, setMoves] = useState(0);
   const mazeWidth = 21;
   const mazeHeight = 21;
   const navigate = useNavigate();
+  const currentLevel = 9;
+
+  // Add updateUserScore function
+  const updateUserScore = async () => {
+    const endTime = Date.now();
+    const completionTime = Math.floor((endTime - startTime) / 1000); // Convert to seconds
+    
+    try {
+      const token = localStorage.getItem('accessToken');
+      const response = await axios.post(
+        "http://127.0.0.1:8000/api/leaderboard/update-score/",
+        {
+          level_completed: currentLevel,
+          completion_time: completionTime,
+          moves: moves // Number of moves made
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
+      console.log("Score updated:", response.data);
+      return true;
+    } catch (error) {
+      console.error("Failed to update score:", error);
+      return false;
+    }
+  };
 
   // Generate maze using recursive backtracking
   const generateMaze = useCallback(() => {
@@ -93,6 +125,8 @@ const MazeGame = () => {
     setGameWon(false);
     setShortestPath([]);
     setShowShortestPath(false);
+    setStartTime(Date.now());
+    setMoves(0);
   };
 
   // Update shortest path when player moves or maze changes
@@ -132,11 +166,14 @@ const MazeGame = () => {
       if (newY >= 0 && newY < maze.length && newX >= 0 && newX < maze[0].length) {
         if (maze[newY][newX] === 0 || maze[newY][newX] === 2) {
           setPlayerPos({ x: newX, y: newY });
+          setMoves(prevMoves => prevMoves + 1);
           
           // Check if reached the end
           if (maze[newY][newX] === 2) {
             setGameWon(true);
-            setTimeout(() => navigate('/game/10'), 2000); // Navigate to Level 10 after 2 seconds
+            updateUserScore().then(() => {
+              setTimeout(() => navigate('/game/10'), 2000);
+            });
           }
         }
       }
@@ -177,7 +214,7 @@ const MazeGame = () => {
       <h1>Maze Pathfinder</h1>
       <div className={styles.controls}>
         <button onClick={resetGame}>New Maze</button>
-        
+        <span>Moves: {moves}</span>
       </div>
       
       <div className={styles.instructions}>
@@ -198,6 +235,7 @@ const MazeGame = () => {
         <div className={styles.winMessage}>
           <h2>You Won!</h2>
           <p>You found the exit!</p>
+          <p>Total Moves: {moves}</p>
           <p>Proceeding to Level 10...</p>
           <button onClick={resetGame}>Play Again</button>
         </div>

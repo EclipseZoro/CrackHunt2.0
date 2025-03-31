@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './game14.module.css';
+import axios from 'axios';
 
 const KakuroGame = () => {
   const [gameState, setGameState] = useState('start'); // 'start', 'playing', 'won'
   const [selectedCell, setSelectedCell] = useState(null);
   const [playerGrid, setPlayerGrid] = useState(Array(8).fill().map(() => Array(8).fill(0)));
   const [showRules, setShowRules] = useState(false);
+  const [startTime, setStartTime] = useState(Date.now());
+  const [moves, setMoves] = useState(0);
   const navigate = useNavigate();
+  const currentLevel = 14;
 
   // Puzzle definition
   const puzzle = [
@@ -33,16 +37,48 @@ const KakuroGame = () => {
     [0, 2, 9, 0, 0, 3, 4, 0]
   ];
 
+  // Add updateUserScore function
+  const updateUserScore = async () => {
+    const endTime = Date.now();
+    const completionTime = Math.floor((endTime - startTime) / 1000); // Convert to seconds
+    
+    try {
+      const token = localStorage.getItem('accessToken');
+      const response = await axios.post(
+        "http://127.0.0.1:8000/api/leaderboard/update-score/",
+        {
+          level_completed: currentLevel,
+          completion_time: completionTime,
+          moves: moves // Number of moves made
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
+      console.log("Score updated:", response.data);
+      return true;
+    } catch (error) {
+      console.error("Failed to update score:", error);
+      return false;
+    }
+  };
+
   const startGame = () => {
     setGameState('playing');
     setPlayerGrid(Array(8).fill().map(() => Array(8).fill(0)));
     setSelectedCell(null);
+    setStartTime(Date.now());
+    setMoves(0);
   };
 
   const restartGame = () => {
     setPlayerGrid(Array(8).fill().map(() => Array(8).fill(0)));
     setSelectedCell(null);
     setGameState('playing');
+    setStartTime(Date.now());
+    setMoves(0);
   };
 
   const selectCell = (row, col) => {
@@ -62,11 +98,17 @@ const KakuroGame = () => {
     } else {
       // Set number
       newGrid[row][col] = num;
+      setMoves(prevMoves => prevMoves + 1);
     }
     
     setPlayerGrid(newGrid);
     validateMove(newGrid, row, col);
-    checkWin(newGrid);
+    
+    if (checkWin(newGrid)) {
+      updateUserScore().then(() => {
+        setTimeout(() => navigate('/game/15'), 2000);
+      });
+    }
   };
 
   const validateMove = (grid, row, col) => {
@@ -130,6 +172,7 @@ const KakuroGame = () => {
           <div className={styles.gameHeader}>
             <h2 className={styles.title}>KAKURO</h2>
             <div className={styles.gameControls}>
+              <span>Moves: {moves}</span>
               <button className={styles.controlButton} onClick={() => setShowRules(true)}>
                 Rules
               </button>
@@ -204,6 +247,7 @@ const KakuroGame = () => {
           <h2 className={styles.title}>Congratulations!</h2>
           <div className={styles.winMessage}>
             <p>You've solved the Kakuro puzzle!</p>
+            <p>Total Moves: {moves}</p>
             <div className={styles.sparkles}>
               {[...Array(20)].map((_, i) => (
                 <div
@@ -222,7 +266,11 @@ const KakuroGame = () => {
             <button className={styles.button} onClick={restartGame}>Play Again</button>
             <button 
               className={`${styles.button} ${styles.nextLevelButton}`}
-              onClick={() => navigate('/game15')}
+              onClick={() => {
+                updateUserScore().then(() => {
+                  navigate('/game/15');
+                });
+              }}
             >
               Next Level
             </button>
