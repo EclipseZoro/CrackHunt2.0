@@ -61,7 +61,7 @@ const Minesweeper = () => {
     const [gameWon, setGameWon] = useState(false);
     const [startTime, setStartTime] = useState(Date.now());
     const navigate = useNavigate();
-    const currentLevel = 2; // Set this based on the current game level
+    const currentLevel = 'level-2'; // Set this based on the current game level
 
     useEffect(() => {
         setGrid(generateGrid());
@@ -75,7 +75,7 @@ const Minesweeper = () => {
         try {
             const token = localStorage.getItem('accessToken'); // Assuming you store JWT in localStorage
             const response = await axios.post(
-                "http://127.0.0.1:8000/api/leaderboard/update-score/",
+                "http://localhost:5000/api/user/update-score",
                 {
                     level_completed: currentLevel,
                     completion_time: completionTime

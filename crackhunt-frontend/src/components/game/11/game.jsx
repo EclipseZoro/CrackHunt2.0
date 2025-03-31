@@ -28,13 +28,13 @@ const Sudoku = () => {
 
   const updateScore = async (gameId, score) => {
     try {
-      const response = await fetch("http://localhost:3001/api/updateScore", {
+      const response = await fetch("http://localhost:5000/api/user/update-score", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-        body: JSON.stringify({ gameId, score }),
+        body: JSON.stringify({ level_completed:'level-11',completion_time:score,gameId, score }),
       });
 
       if (!response.ok) {

@@ -14,10 +14,14 @@ const Games = () => {
   const [error, setError] = useState(null);
   const [unlockedLevels, setUnlockedLevels] = useState(1); 
   const navigate = useNavigate();
-
+  const token = localStorage.getItem("refreshToken");
   useEffect(() => {
     axios
-      .get("http://127.0.0.1:8000/api/leaderboard/", { withCredentials: true }) // token auth
+      .get("http://localhost:5000/api/user/get-score", { 
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+       }) // token auth
       .then(response => {
         setUserData(response.data);
         setLoading(false);

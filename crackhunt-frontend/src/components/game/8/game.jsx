@@ -26,7 +26,7 @@ const MastermindGame = () => {
   const [showRules, setShowRules] = useState(false);
   const [gameStarted, setGameStarted] = useState(false);
   const [startTime, setStartTime] = useState(Date.now());
-  const currentLevel = 8;
+  const currentLevel = 'level-8';
 
   const updateUserScore = async () => {
     const endTime = Date.now();
@@ -35,7 +35,7 @@ const MastermindGame = () => {
     try {
       const token = localStorage.getItem('accessToken');
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/leaderboard/update-score/",
+        "http://localhost:5000/api/user/update-score",
         {
           level_completed: currentLevel,
           completion_time: completionTime,

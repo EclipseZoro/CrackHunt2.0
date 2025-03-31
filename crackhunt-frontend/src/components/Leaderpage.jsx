@@ -16,11 +16,11 @@ const LeaderBoard = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const token = localStorage.getItem('access_token');
+      const token = localStorage.getItem('accessToken');
       
       try {
         // Fetch complete leaderboard
-        const leaderboardResponse = await axios.get("http://127.0.0.1:8000/api/leaderboard/", {
+        const leaderboardResponse = await axios.get("http://localhost:5000/api/user/leaderboard/", {
           headers: token ? {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json',
@@ -30,7 +30,7 @@ const LeaderBoard = () => {
         });
 
         // Set the leaderboard data
-        setLeaderboard(leaderboardResponse.data.top_players || []);
+        setLeaderboard(leaderboardResponse.data.leaderboard || []);
         setLoading(false);
       } catch (error) {
         console.error("API Error:", error.response?.data || error.message);
@@ -82,7 +82,7 @@ const LeaderBoard = () => {
                       <tr key={index} className={`rank-${index + 1}`}>
                         <td className="rank-cell">{index + 1}</td>
                         <td className="name-cell">{player.username}</td>
-                        <td className="score-cell">{player.score}</td>
+                        <td className="score-cell">{player.totalScore}</td>
                       </tr>
                     ))
                   ) : (

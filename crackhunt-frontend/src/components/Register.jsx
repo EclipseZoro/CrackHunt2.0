@@ -10,7 +10,7 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-
+  let response;
   const handleRegister = async () => {
     const trimmedUsername = username.trim();
     const trimmedPassword = password.trim();
@@ -29,17 +29,29 @@ const Register = () => {
     setError("");
 
     try {
-      const response = await axios.post("http://127.0.0.1:8000/api/users/register/", {
+      console.log("Registering user:", {
+        email: trimmedUsername,
         username: trimmedUsername,
         password: trimmedPassword,
       });
+      
+      response = await axios.post("http://localhost:5000/api/auth/register", {
+        email: trimmedUsername,
+        username: trimmedUsername,
+        password: trimmedPassword,
+      });
+
+     
+      
       
 
       alert("Registration successful! You can now log in.");
       navigate("/profile");
     } catch (error) {
+      console.log("Registration error:",  error.response.data);
+      
       if (error.response) {
-        setError(error.response.data.error || "Registration failed. Please try again.");
+        setError(error.response.data.message || "Registration failed. Please try again.");
       } else {
         setError("Network error. Please check your connection.");
       }

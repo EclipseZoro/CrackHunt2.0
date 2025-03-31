@@ -20,7 +20,7 @@ const SimonSays = () => {
   const [winner, setWinner] = useState(false);
   const [activeColor, setActiveColor] = useState(null);
   const [startTime, setStartTime] = useState(Date.now());
-  const currentLevel = 3; // Set this based on the current game level
+  const currentLevel = 'level-3'; // Set this based on the current game level
 
   const updateUserScore = async () => {
     const endTime = Date.now();
@@ -29,7 +29,7 @@ const SimonSays = () => {
     try {
       const token = localStorage.getItem('accessToken');
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/leaderboard/update-score/",
+        "http://localhost:5000/api/user/update-score",
         {
           level_completed: currentLevel,
           completion_time: completionTime

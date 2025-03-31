@@ -61,7 +61,7 @@ const WordGuessing = () => {
     const wordLength = 5;
     const maxAttempts = 6;
     const navigate = useNavigate();
-    const currentLevel = 12;
+    const currentLevel = 'level-12';
     
     const [word, setWord] = useState(() =>
         words[Math.floor(Math.random() * words.length)].toUpperCase()
@@ -89,7 +89,7 @@ const WordGuessing = () => {
         try {
             const token = localStorage.getItem('accessToken');
             const response = await axios.post(
-                "http://127.0.0.1:8000/api/leaderboard/update-score/",
+                "http://localhost:5000/api/user/update-score",
                 {
                     level_completed: currentLevel,
                     completion_time: completionTime,

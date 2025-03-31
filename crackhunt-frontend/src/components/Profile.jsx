@@ -18,14 +18,18 @@ const Profile = () => {
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post("http://127.0.0.1:8000/api/users/login/", {
+      const response = await axios.post("http://localhost:5000/api/auth/login", {
+        email: username,
         username,
         password,
       });
 
-      const { access, refresh, username: loggedInUser } = response.data;
-      localStorage.setItem("accessToken", access);
-      localStorage.setItem("refreshToken", refresh);
+      console.log(response.data);
+      
+
+      const { refreshToken , username: loggedInUser } = response.data;
+      localStorage.setItem("accessToken", refreshToken);
+      localStorage.setItem("refreshToken", refreshToken);
       localStorage.setItem("username", loggedInUser);
 
       login(loggedInUser); // Store user in AuthContext

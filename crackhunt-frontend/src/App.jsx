@@ -36,22 +36,23 @@ function App() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/register" element={<Register />} />
             <Route path="/games" element={<ProtectedRoute><Games /></ProtectedRoute>} />
-            <Route path="/game/1" element={<Hangman />} />
-            <Route path="/game/2" element={<Minesweeper />} />
-            <Route path="/game/3" element={<SimonSays />} />
-            <Route path="/game/4" element={<SlidingPuzzle />} />
-            <Route path="/game/5" element={<FlappyBird />} />
-            <Route path="/game/6" element={<PegSolitaire />} />
-            <Route path="/game/7" element={<LightsOut />} />
-            <Route path="/game/8" element={<MastermindGame />} />
-            <Route path="/game/9" element={<MazeGame />} />
-            <Route path="/game/10" element={<ReversiGame />} />
-            <Route path="/game/11" element={<Sudoku />} />
-            <Route path="/game/12" element={<WordGuessing />} />
-            <Route path="/game/13" element={<TowerOfHanoi />} />
-            <Route path="/game/14" element={<KakuroGame />} />
-            <Route path="/game/15" element={<TicTacToe />} />
-            <Route path="/game/16" element={<HexGame />} />
+  
+            <Route path="/game/1" element={<ProtectedRoute><Hangman /></ProtectedRoute>} />
+            <Route path="/game/2" element={<ProtectedRoute><Minesweeper /></ProtectedRoute>} />
+            <Route path="/game/3" element={<ProtectedRoute><SimonSays /></ProtectedRoute>} />
+            <Route path="/game/4" element={<ProtectedRoute><SlidingPuzzle /></ProtectedRoute>} />
+            <Route path="/game/5" element={<ProtectedRoute><FlappyBird /></ProtectedRoute>} />
+            <Route path="/game/6" element={<ProtectedRoute><PegSolitaire /></ProtectedRoute>} />
+            <Route path="/game/7" element={<ProtectedRoute><LightsOut /></ProtectedRoute>} />
+            <Route path="/game/8" element={<ProtectedRoute><MastermindGame /></ProtectedRoute>} />
+            <Route path="/game/9" element={<ProtectedRoute><MazeGame /></ProtectedRoute>} />
+            <Route path="/game/10" element={<ProtectedRoute><ReversiGame /></ProtectedRoute>} />
+            <Route path="/game/11" element={<ProtectedRoute><Sudoku /></ProtectedRoute>} />
+            <Route path="/game/12" element={<ProtectedRoute><WordGuessing /></ProtectedRoute>} />
+            <Route path="/game/13" element={<ProtectedRoute><TowerOfHanoi /></ProtectedRoute>} />
+            <Route path="/game/14" element={<ProtectedRoute><KakuroGame /></ProtectedRoute>} />
+            <Route path="/game/15" element={<ProtectedRoute><TicTacToe /></ProtectedRoute>} />
+            <Route path="/game/16" element={<ProtectedRoute><HexGame /></ProtectedRoute>} />
             <Route path="/leaderboard" element={<ProtectedRoute><LeaderBoard /></ProtectedRoute>} />
           </Routes>
         </div>

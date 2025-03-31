@@ -17,7 +17,7 @@ const Hangman = () => {
   const [startTime, setStartTime] = useState(Date.now());
   const maxMistakes = 6;
   const navigate = useNavigate();
-  const currentLevel = 1; // Set this based on the current game level
+  const currentLevel = 'level-1'; // Set this based on the current game level
 
   useEffect(() => {
     setWord(words[Math.floor(Math.random() * words.length)].toUpperCase());
@@ -46,9 +46,11 @@ const Hangman = () => {
     const completionTime = Math.floor((endTime - startTime) / 1000); // Convert to seconds
     
     try {
-      const token = localStorage.getItem('accessToken'); // Assuming you store JWT in localStorage
+      const token = localStorage.getItem('refreshToken'); // Assuming you store JWT in localStorage
+      console.log("Updating score with token:", token);
+  
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/leaderboard/update-score/",
+        "http://localhost:5000/api/user/update-score",
         {
           level_completed: currentLevel,
           completion_time: completionTime

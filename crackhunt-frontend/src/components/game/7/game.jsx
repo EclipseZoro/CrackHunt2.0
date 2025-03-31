@@ -10,7 +10,7 @@ const LightsOut = () => {
   const [board, setBoard] = useState(Array(BOARD_SIZE).fill().map(() => Array(BOARD_SIZE).fill(false)));
   const [startTime, setStartTime] = useState(Date.now());
   const navigate = useNavigate();
-  const currentLevel = 7; // Set this based on the current game level
+  const currentLevel = 'level-7'; // Set this based on the current game level
 
   const updateUserScore = async () => {
     const endTime = Date.now();
@@ -19,7 +19,7 @@ const LightsOut = () => {
     try {
       const token = localStorage.getItem('accessToken');
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/leaderboard/update-score/",
+        "http://localhost:5000/api/user/update-score",
         {
           level_completed: currentLevel,
           completion_time: completionTime,

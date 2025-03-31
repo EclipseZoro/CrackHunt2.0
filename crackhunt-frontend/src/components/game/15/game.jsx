@@ -12,7 +12,7 @@ const TicTacToe = () => {
   const [startTime, setStartTime] = useState(Date.now());
   const [moves, setMoves] = useState(0);
   const navigate = useNavigate();
-  const currentLevel = 15;
+  const currentLevel = 'level-15';
 
   // Add updateUserScore function
   const updateUserScore = async () => {
@@ -22,7 +22,7 @@ const TicTacToe = () => {
     try {
       const token = localStorage.getItem('accessToken');
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/leaderboard/update-score/",
+        "http://localhost:5000/api/user/update-score",
         {
           level_completed: currentLevel,
           completion_time: completionTime,

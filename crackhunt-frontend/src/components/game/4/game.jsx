@@ -10,7 +10,7 @@ const SlidingPuzzle = () => {
   const [message, setMessage] = useState('');
   const [startTime, setStartTime] = useState(Date.now());
   const navigate = useNavigate();
-  const currentLevel = 4; // Set this based on the current game level
+  const currentLevel = 'level-4'; // Set this based on the current game level
   
   const size = 4; // 4x4 grid
 
@@ -21,7 +21,7 @@ const SlidingPuzzle = () => {
     try {
       const token = localStorage.getItem('accessToken');
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/leaderboard/update-score/",
+        "http://localhost:5000/api/user/update-score",
         {
           level_completed: currentLevel,
           completion_time: completionTime
